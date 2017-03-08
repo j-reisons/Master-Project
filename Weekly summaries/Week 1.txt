@@ -1,0 +1,18 @@
+23.2.17
+
+Matlab reference :
+Organization blog post : http://www.matlabtips.com/how-to-organize-your-matlab-files/ 
+
+MATLAB search path : https://ch.mathworks.com/help/matlab/matlab_env/files-and-folders-that-matlab-accesses.html
+Function precedence order : http://ch.mathworks.com/help/matlab/matlab_prog/function-precedence-order.html
+OOP : https://ch.mathworks.com/help/matlab/object-oriented-programming.html
+All the good stuff from sweng : https://ch.mathworks.com/help/matlab/software-development.html
+
+
+End of week 1 :
+
+Still unsure whether to study spin transport in spin 1 XXZ (which is known to have Luttinger liquid phase in ground state, so we sould expect interesting transport),
+study second neighbor coupling spin 1/2 chain which could have similar properties, or abandon spin chains and study quadratically driven bulk-dissipative 
+Bose-Hubbard chains.
+
+Read miscelaneous articles tangentially related to the field.

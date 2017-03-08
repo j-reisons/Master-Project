@@ -80,15 +80,17 @@ fprintf('Testing scalar product...');
 assert(isequal(braket(M,Mprime),neel'*ham*neel))
 fprintf('\tdone\n');
 fprintf('Testing MPO expansion...');
-assert(isequal(expand_MPO(O),ham));
+assert(isequal(expand_MPO(O),ham))
 fprintf('\tdone\n');
 
 %% Testing canonized state
-Mleft = Mprime;
 
-for i = 1:N
-Mleft = L_can(Mleft,i);
-end
+Mleft = Mprime;
+Mleft = sweep(Mprime,1);
+
+tolerance = 1e-15;
+overlap = expand_MPS(Mleft)'*(newstate/norm(newstate));
+
 fprintf('Testing left canonization...');
-assert(expand_MPS(Mleft)'*(newstate/norm(newstate)));
+assert(approx(overlap,1,tolerance))
 fprintf('\tdone\n');

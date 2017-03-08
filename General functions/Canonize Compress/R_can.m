@@ -1,4 +1,4 @@
-function [Mright,error,D_max] = R_can(mps,site,varargin)
+function [Mright,mps_norm] = R_can(mps,site,varargin)
 % Right canonizes (if asked compresses) $site of mps and throws the US to the left.
 % varargin is empty, or tolerance and D_limit
 % If empty, canonization without compression
@@ -14,6 +14,8 @@ else
     a = 0; % a = 0 is no compression
 end
 
+mps_norm = 0;
+
 N = length(mps);
 Mright = mps; % returned MPS
 
@@ -26,28 +28,25 @@ catch % SVD not-converging workaround
     work = work + rand(size(work))*1E-10;
     [U,S,V] = svd(work,'econ');
 end
-s_s = size(S,1);
+
+S_2 = diag(S*S');
+S_2 = S_2/sum(S_2);
+
 switch a
     case 0
-        S = S /sqrt(trace(S*S'));
-        D_max = size(S,1);
-        error = 0;
     case 1
-    S_2 = S*S';
-    S = S /sqrt(trace(S_2));
-    S_2 = diag(S*S');
-    cut = 0;
-    sum = 0;
-    while 1 - sum > tolerance && cut < D_limit && cut < length(S_2)
-        cut = cut +1;
-        sum = sum + S_2(cut);
-    end
-    error = 1 - sum;
-    D_max = cut;
-    U = U(:,1:D_max);
-    S = S(1:D_max,1:D_max);
-    S = S /sqrt(trace(S*S'));
-    V = V(:,1:D_max);
+        cut = 0;
+        running_sum = 0;
+        % We find the dimension to which we need to compress to respect tolerance
+        while 1 - running_sum > tolerance && cut < D_limit && cut < length(S_2)
+            cut = cut + 1;
+            running_sum = running_sum + S_2(cut);
+        end
+        
+        % Compression
+        U = U(:,1:cut);
+        S = S(1:cut,1:cut);
+        V = V(:,1:cut);
 end
 s_v = size(V');
 B = reshape(V',[s_v(1),s_w(2),s_w(3)]);
@@ -57,7 +56,9 @@ if site ~=1
     Mright{site-1} = contract(Mright{site-1},2,US,1);
     Mright{site-1} = permute(Mright{site-1},[1,3,2]);
 else
-    Mright{site} = Mright{site}*sign(US); % Fixing +- 1 phase
+    Mright{site} = Mright{site}*sign(US);     % Fixing +- 1 phase
+    mps_norm = sign(US)*US;
+
 end
 
 end

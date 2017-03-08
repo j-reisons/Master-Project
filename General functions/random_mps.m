@@ -1,4 +1,4 @@
-function [mps] = random_mps(N,D,d,varargin)
+function [mps,norm] = random_mps(N,D,d,varargin)
 %RANDOM_MPS random mps of spin chain length N, bond length D, local H space
 %dimension d. Returns Right or left normalized if specified, by default
 %left
@@ -10,18 +10,15 @@ for i = 2:N-1
 end
 mps{N} = rand(D,1,d);
 
-direction = 1;
+direction = 1; % 1 is left, -1 is right
+
 if ~isempty(varargin)
     direction = varargin{1};
 end
 
-switch direction
-    case 1
-        mps = sweep(mps,direction);
-        return
-    case -1
-        mps = sweep(mps,direction);
-        return
-end
+ mps = sweep(mps,-direction);
+[mps,norm] = sweep(mps,direction);
+
+
 end
 

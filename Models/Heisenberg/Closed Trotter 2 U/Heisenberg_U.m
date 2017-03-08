@@ -1,5 +1,5 @@
-function [U_odd,U_even] = Heisenberg_U(N,J,U,dt)
-%HEISENBERG Returns odd and even evolution operators for the Heisenberg
+function [U_even,U_odd] = Heisenberg_U(N,J,U,dt)
+%HEISENBERG Returns Even and Odd evolution operators
 %Hamiltonian of parameters N,J,U,dt
 %Outlined in Schollwock 7.1.1 p75 and 7.1.2 p 77
 %% Pauli and co
@@ -34,13 +34,14 @@ U = reshape(U,[d,d,1,k]);% sig 1,sig 1',1,k
 U = permute(U,[3,4,1,2]);%1,k,sig1,sig1'
 U_bar = reshape(U_bar,[k,1,d,d]);% k, 1 ,sig2 sig2'
 I_site = reshape(eye(2),[1,1,d,d]);% 1,1,sig,sig'
+
 %% Putting it all into U_even and U_odd
 
 U_odd = cell(1,N);
 
 for i = 1:2:N-1;
-U_odd{i}= U;
-U_odd{i+1}= U_bar;
+    U_odd{i}= U;
+    U_odd{i+1}= U_bar;
 end
 
 U_even = cell(1,N);
@@ -48,8 +49,8 @@ U_even = cell(1,N);
 U_even{1}= I_site;
 
 for i = 2:2:N-1;
-U_even{i} = U;
-U_even{i+1} = U_bar;
+    U_even{i} = U;
+    U_even{i+1} = U_bar;
 end
 
 % Chain length problems

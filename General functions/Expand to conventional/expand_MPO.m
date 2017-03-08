@@ -1,5 +1,5 @@
 function operator = expand_MPO(mpo)
-% expands MPO into "conventional Big matrix"
+% expands MPO into "Big matrix"
 % Giacommo wrote this version of the function, I can't comment on it
 
 N = length(mpo);

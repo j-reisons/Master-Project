@@ -1,4 +1,4 @@
-function state = expand_MPS(mps)
+function state = expand_MPS_legacy(mps)
 % expands MPS into "big vector"
 % Giacommo wrote this version of the function, I can't comment on it
 % It can be used to verify that a specific state has been written correctly

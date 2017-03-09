@@ -1,7 +1,7 @@
 close all;
 clear all;
 
-N = 9;     % Number of sites
+N = 10;     % Number of sites
 d = 2;      % Local H-space dimension
 D_S = 2;    % State bond dim
 D_O = 3;    % Operator bond dim
@@ -69,18 +69,22 @@ for i = 1:(N-1) % number of terms in H
 end
 
 %% Calculate new state
-
 Mprime = apply(O,M);
 newstate = expand_MPS(Mprime);
-
+%%
 fprintf('Testing MPO*MPS...');
 assert(isequal(newstate,ham*neel))
 fprintf('\t\tdone\n');
+%%
 fprintf('Testing scalar product...');
 assert(isequal(braket(M,Mprime),neel'*ham*neel))
 fprintf('\tdone\n');
+%%
+bigO = expand_MPO(O);
+tolerance = 1e-15;
+
 fprintf('Testing MPO expansion...');
-assert(isequal(expand_MPO(O),ham))
+assert(approx(max(max(bigO-ham)),0,tolerance));
 fprintf('\tdone\n');
 
 %% Testing canonized state
@@ -88,7 +92,7 @@ fprintf('\tdone\n');
 Mleft = Mprime;
 Mleft = sweep(Mprime,1);
 
-tolerance = 1e-15;
+
 overlap = expand_MPS(Mleft)'*(newstate/norm(newstate));
 
 fprintf('Testing left canonization...');

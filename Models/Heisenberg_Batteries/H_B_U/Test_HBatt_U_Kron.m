@@ -6,12 +6,14 @@ addpath('General functions','Models/Heisenberg_Batteries')
 
 %%
 
+d = 2;
 N = 2;
+
+dim = d^(3*N);
 noteven = mod(N,2);
 J = 2;
 U_b = 0;
 U_c = 1;
-d = 2;
 dt = 0.02; % Time increment
 
 [U_even_dt,U_odd_dt] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt);
@@ -26,59 +28,61 @@ S_Y = [0,-1i;1i,0];
 S_Z = [1,0;0,-1];
 
 
-Ham_pair_c = J*(kron(S_X,S_X) + kron(S_Y,S_Y)) + U_c*(kron(S_Z,S_Z));
-Ham_pair_b = J*(kron(S_X,S_X) + kron(S_Y,S_Y)) + U_b*(kron(S_Z,S_Z));
+Ham_pair_c = sparse(J*(kron(S_X,S_X) + kron(S_Y,S_Y)) + U_c*(kron(S_Z,S_Z)));
+Ham_pair_b = sparse(J*(kron(S_X,S_X) + kron(S_Y,S_Y)) + U_b*(kron(S_Z,S_Z)));
 
-H_kron = 0;
-H_even_kron = 0;
-H_odd_kron = 0;
+H_kron = sparse(dim,dim);
+H_even_kron = sparse(dim,dim);
+H_odd_kron = sparse(dim,dim);
 
 
 for i = 1:1:N
-    H_kron = H_kron + kron(kron(eye(d^(i-1)),Ham_pair_b),eye(d^((3*N)-i-1)));
+    H_kron = H_kron + kron(kron(speye(d^(i-1)),Ham_pair_b),speye(d^((3*N)-i-1)));
 end
 for i = N+1:1:(2*N)-1
-    H_kron = H_kron + kron(kron(eye(d^(i-1)),Ham_pair_c),eye(d^((3*N)-i-1)));
+    H_kron = H_kron + kron(kron(speye(d^(i-1)),Ham_pair_c),speye(d^((3*N)-i-1)));
 end
 for i = 2*N:1:(3*N)-1
-    H_kron = H_kron + kron(kron(eye(d^(i-1)),Ham_pair_b),eye(d^((3*N)-i-1)));
+    H_kron = H_kron + kron(kron(speye(d^(i-1)),Ham_pair_b),speye(d^((3*N)-i-1)));
 end
 
 for i = 1:2:N
-    H_odd_kron = H_odd_kron + kron(kron(eye(d^(i-1)),Ham_pair_b),eye(d^((3*N)-i-1)));
+    H_odd_kron = H_odd_kron + kron(kron(speye(d^(i-1)),Ham_pair_b),speye(d^((3*N)-i-1)));
 end
 for i = 2:2:N
-    H_even_kron = H_even_kron + kron(kron(eye(d^(i-1)),Ham_pair_b),eye(d^((3*N)-i-1)));
+    H_even_kron = H_even_kron + kron(kron(speye(d^(i-1)),Ham_pair_b),speye(d^((3*N)-i-1)));
 end
 
 if noteven
     for i = N+1:2:(2*N)-1
-        H_even_kron = H_even_kron + kron(kron(eye(d^(i-1)),Ham_pair_c),eye(d^((3*N)-i-1)));
+        H_even_kron = H_even_kron + kron(kron(speye(d^(i-1)),Ham_pair_c),speye(d^((3*N)-i-1)));
     end
     
     for i = N+2:2:(2*N)-1
-        H_odd_kron = H_odd_kron + kron(kron(eye(d^(i-1)),Ham_pair_c),eye(d^((3*N)-i-1)));
+        H_odd_kron = H_odd_kron + kron(kron(speye(d^(i-1)),Ham_pair_c),speye(d^((3*N)-i-1)));
     end
 else
     for i = N+1:2:(2*N)-1
-        H_odd_kron = H_odd_kron + kron(kron(eye(d^(i-1)),Ham_pair_c),eye(d^((3*N)-i-1)));
+        H_odd_kron = H_odd_kron + kron(kron(speye(d^(i-1)),Ham_pair_c),speye(d^((3*N)-i-1)));
     end  
     for i = N+2:2:(2*N)-1
-        H_even_kron = H_even_kron + kron(kron(eye(d^(i-1)),Ham_pair_c),eye(d^((3*N)-i-1)));
+        H_even_kron = H_even_kron + kron(kron(speye(d^(i-1)),Ham_pair_c),speye(d^((3*N)-i-1)));
     end
 end
 
 for i = 2*N:2:3*N-1
-    H_even_kron = H_even_kron + kron(kron(eye(d^(i-1)),Ham_pair_b),eye(d^((3*N)-i-1)));
+    H_even_kron = H_even_kron + kron(kron(speye(d^(i-1)),Ham_pair_b),speye(d^((3*N)-i-1)));
 end
 for i = 2*N+1:2:3*N-1
-    H_odd_kron = H_odd_kron + kron(kron(eye(d^(i-1)),Ham_pair_b),eye(d^((3*N)-i-1)));
+    H_odd_kron = H_odd_kron + kron(kron(speye(d^(i-1)),Ham_pair_b),speye(d^((3*N)-i-1)));
 end
 
-U_even_kron = expm(-1i*dt*H_even_kron);
-U_odd_kron = expm(-1i*dt*H_odd_kron);
-U_kron = expm(-1i*dt*H_kron);
-Trotter_kron = expm(-1i*(dt/2)*H_odd_kron)*expm(-1i*dt*H_even_kron)*expm(-1i*(dt/2)*H_odd_kron);
+%%
+assert(isequal(H_kron,H_even_kron + H_odd_kron));
+%%
+U_odd_kron = sparse(expm(-1i*dt*H_odd_kron));
+U_kron = sparse(expm(-1i*dt*H_kron));
+Trotter_kron = sparse(expm(-1i*(dt/2)*H_odd_kron)*expm(-1i*dt*H_even_kron)*expm(-1i*(dt/2)*H_odd_kron));
 
 fprintf('\tdone\n');
 %% MPS U

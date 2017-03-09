@@ -11,12 +11,18 @@ d = 2;
 D_start = 30;
 ground_error = 1E-10;
 
-T = 5;
+T = 3;
 dt = 0.05;
 steps = round(T/dt);
 
 D_max = 100;
 comp_error = 1E-10;
+
+tag = 'testing';
+
+filename = ['Batteries','_N',strrep(num2str(N),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
+    ,'_Uc',strrep(num2str(U_c),'.',','),'_','T',strrep(num2str(T),'.',','),'_','Dmax',num2str(D_max)...
+    ,'_',tag,'.mat'];
 
 %% Initial state preparation
 State = cell(1,3*N);
@@ -50,7 +56,8 @@ S_Z =[
     ];
 
 %%
-
+fprintf('Three U \n')
+tic
 for j = 1:3*N
     Sz_State = State;
     Sz_State{j} = contract(State{j},3,S_Z,2);
@@ -58,17 +65,23 @@ for j = 1:3*N
 end
 
 for i = 1:steps
-    i
+    
     for j = 1:3*N
         Sz_State = State;
         Sz_State{j} = contract(State{j},3,S_Z,2);
         Magnetizations(j,i+1) = real(braket(Sz_State,State));
     end
     
-    State = apply(U,State);
+    State = apply(U_odd_half,State);
     State = Iter_comp(State,D_max,comp_error);
     
+    State = apply(U_even_dt,State);
+    State = Iter_comp(State,D_max,comp_error);
+    
+    State = apply(U_odd_half,State);
+    State = Iter_comp(State,D_max,comp_error);
 end
+toc 
 %%
-save('N=10_J=2_Uc=1_Ub=0_T=5_Dmax=100.mat','Magnetizations')
+save(filename,'Magnetizations')
 %%

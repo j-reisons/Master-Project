@@ -1,4 +1,4 @@
-function operator = expand_MPO(mpo)
+function operator = expand_MPO_legacy(mpo)
 % expands MPO into "Big matrix"
 % Giacommo wrote this version of the function, I can't comment on it
 

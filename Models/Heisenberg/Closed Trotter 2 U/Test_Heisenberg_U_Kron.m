@@ -10,7 +10,7 @@ N = 9;
 J = 2;
 U = 1;
 d = 2;
-dt = 0.01; % Time increment
+dt = 1; % Time increment
 
 [U_even_dt,U_odd_dt] = Heisenberg_U(N,J,U,dt);
 [U_even_half,U_odd_half] = Heisenberg_U(N,J,U,dt/2);
@@ -60,15 +60,15 @@ fprintf('\tdone\n');
 tolerance = 1e-10;
 
 fprintf('Testing U_even...');
-assert(approx(norm(U_even_kron - Test_even,'fro'),0,tolerance));
+assert(approx(max(max((U_even_kron - Test_even))),0,tolerance));
 fprintf('\tdone\n');
 
 fprintf('Testing U_odd...');
-assert(approx(norm(U_odd_kron - Test_odd,'fro'),0,tolerance));
+assert(approx(max(max((U_odd_kron - Test_odd))),0,tolerance));
 fprintf('\tdone\n');
 
 fprintf('Testing U_trotter...');
-assert(approx(norm(Trotter_kron - Test,'fro'),0,tolerance));
+assert(approx(max(max(Trotter_kron - Test)),0,tolerance));
 fprintf('\tdone\n');
 
 fprintf('Testing U_norm...');

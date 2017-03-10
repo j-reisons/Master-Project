@@ -5,18 +5,19 @@ function sprod = braket(mps_1,mps_2)
 % Scholl 4.2.1 page 34
 
 N = length(mps_1);
-D_S = size(mps_1{1},3); % Physical dimension of site 1
+d = size(mps_1{1},3); % Physical dimension
 sprod = 0;
 
-for sigma = 1:D_S % First site
+for sigma = 1:d % First site
     sprod = sprod + mps_1{1}(:,:,sigma)'*mps_2{1}(:,:,sigma);
 end
 
 for i = 2:N
     sum = 0;
-    for sigma= 1:D_S
+    for sigma= 1:d
         sum = sum + mps_1{i}(:,:,sigma)'*sprod*mps_2{i}(:,:,sigma);
     end
     sprod = sum;
 end
+
 end

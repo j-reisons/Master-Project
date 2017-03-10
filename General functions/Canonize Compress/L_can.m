@@ -6,17 +6,15 @@ function [Mleft,mps_norm] = L_can(mps,site,varargin)
 % Last site normalization is returned, sign is fixed
 % Procedure is outline in Schollwock 4.4.1 , page 43
 
-a = 0; % 0 is no compression,1 is compression
-mps_norm = 0;
-
 if ~isempty(varargin)
     tolerance = varargin{1};
     D_limit = varargin{2};
-    a = 1; % a = 1 is compression
+	a = 1; % a = 1 is compression
 else
     a = 0 ; % a = 0 is no compression
 end
 
+mps_norm = 0;
 N = length(mps);
 Mleft = mps; % returned MPS
 
@@ -27,19 +25,24 @@ s_w = size(work); % Will be needed later for a reshape
 work = permute(work,[1 3 2]);
 work = reshape(work,[s_w(3)*s_w(1),s_w(2)]);
 
-try
-    [U,S,V] = svd(work,'econ');
-catch % SVD not-converging workaround
-    work = work + rand(size(work))*1E-10;
-    [U,S,V] = svd(work,'econ');
-end
-
-S_2 = diag(S*S');
-S_2 = S_2/sum(S_2);
-
 switch a
     case 0
+        
+        [Q,R] = qr(work,0);
+        U = Q;
+        SV = R;
+        
     case 1
+        
+        try
+            [U,S,V] = svd(work,'econ');
+        catch % SVD not-converging workaround
+            work = work + rand(size(work))*1E-10;
+            [U,S,V] = svd(work,'econ');
+        end
+        
+        S_2 = diag(S*S');
+        S_2 = S_2/sum(S_2);
         cut = 0;
         running_sum = 0;
         % We find the dimension to which we need to compress to respect tolerance
@@ -47,18 +50,18 @@ switch a
             cut = cut + 1;
             running_sum = running_sum + S_2(cut);
         end
-        
         % Compression
         U = U(:,1:cut);
         S = S(1:cut,1:cut);
         V = V(:,1:cut);
-        
+                
+        SV = S*V';
 end
+
 s_u = size(U);
 A = reshape(U,[s_w(1) s_w(3) s_u(2)]);
 A = permute(A,[1 3 2]);
 Mleft{site} = A;
-SV = S*V';
 if site ~= N
     Mleft{site+1} = contract(SV,2,Mleft{site+1},1);
 else

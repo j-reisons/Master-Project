@@ -1,9 +1,6 @@
 close all
 clear all
 clc
-
-addpath('General functions','Models/Heisenberg_Batteries')
-
 %%
 
 d = 2;

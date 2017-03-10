@@ -1,5 +1,5 @@
-function [mps_out] = Iter_comp(mps_in,D_max,tol)
-% Iteratively compresses MPS to D_max and tol.
+function [mps_out,canon,acc,sweeps] = Iter_comp(mps_in,tol,D_max)
+% Iteratively compresses MPS to D_max and tol. svdtype indicates svd or rsvd for initial guess
 %
 %
 % Stops if tolerance is reached, or if iterations no longer provide
@@ -13,7 +13,7 @@ function [mps_out] = Iter_comp(mps_in,D_max,tol)
 s = size(mps_in{1});
 N = length(mps_in);
 
-mps_out = sweep(mps_in,-1,eps,D_max);
+mps_out = sweep(mps_in,-1,tol,D_max);
 
 acc = 1;
 criterion = 0;
@@ -55,6 +55,7 @@ while criterion < 0.8 && acc > tol
     acc = norm(1 - L{N+1});
     criterion = acc/prev;
     if criterion > 0.8 || acc < tol
+        canon = 1;
         break
     end
     
@@ -82,7 +83,7 @@ while criterion < 0.8 && acc > tol
     prev = acc;
     acc = norm(1 - err);
     criterion = acc/prev;
-    
+    canon = -1;
 end
 end
 

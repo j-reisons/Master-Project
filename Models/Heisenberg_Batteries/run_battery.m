@@ -1,24 +1,19 @@
-clc
-close all
-clear all
-%%
-N = 10;
-J = 2;
-U_c = 1;
-U_b = 0;
+function run_battery(N,U_c,U_b)
+
+J = 1;
 d = 2;
 
 D_start = 30;
-ground_error = 1E-10;
+D_max = 100;
 
-T = 3;
+T = N/(2*J);
 dt = 0.05;
 steps = round(T/dt);
 
-D_max = 100;
-comp_error = 1E-10;
+ground_error = 1E-8;
+comp_error = 1E-9;
 
-tag = 'testing';
+tag = 'threeU';
 
 filename = ['Batteries','_N',strrep(num2str(N),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
     ,'_Uc',strrep(num2str(U_c),'.',','),'_','T',strrep(num2str(T),'.',','),'_','Dmax',num2str(D_max)...
@@ -48,40 +43,58 @@ end
 U = compressMPO(U_odd_half,U_even_dt,U_odd_half);
 
 Magnetizations = zeros(3*N,steps+1);
-Currents = zeros(3*N,steps);
+Currents = zeros(3*N - 1,steps+1);
+Fidelities = zeros(1,steps);
+sweeps = zeros(1,steps);
 
-S_Z =[
-    [1 , 0]
-    [0 ,-1]
-    ];
+S_Z = [1,0;0,-1];
+S_X =[0,1;1,0];
+S_Y = [0,-1i;1i,0];
+
+S_Z_mpo = cell(1,1);
+S_Z_1 = reshape(S_Z,[1,1,d,d]);
+S_Z_mpo{1} = S_Z_1;
+
+Q_mpo = cell(1,2);  
+Q_1 = zeros(1,2,d,d);
+Q_1(1,1,:,:) = S_X*((2*J)^0.5);
+Q_1(1,2,:,:) = S_Y*((2*J)^0.5);
+Q_mpo{1} = Q_1;
+Q_2 = zeros(2,1,d,d);
+Q_2(1,1,:,:) = S_Y*((2*J)^0.5);
+Q_2(2,1,:,:) = - S_X*((2*J)^0.5);
+Q_mpo{2} = Q_2;
 
 %%
-fprintf('Three U \n')
-tic
-for j = 1:3*N
-    Sz_State = State;
-    Sz_State{j} = contract(State{j},3,S_Z,2);
-    Magnetizations(j,1) = real(braket(Sz_State,State));
-end
+State = sweep(State,1);
+canon = 1;
 
 for i = 1:steps
-    
-    for j = 1:3*N
-        Sz_State = State;
-        Sz_State{j} = contract(State{j},3,S_Z,2);
-        Magnetizations(j,i+1) = real(braket(Sz_State,State));
-    end
+    i
+    evaluations = Canon_evaluator(State,canon,S_Z_mpo,Q_mpo);
+    Magnetizations(:,i) = real(evaluations{1});
+    Currents(:,i) = real(evaluations{2});
     
     State = apply(U_odd_half,State);
-    State = Iter_comp(State,D_max,comp_error);
-    
+    State = Iter_comp(State,comp_error,D_max);
     State = apply(U_even_dt,State);
-    State = Iter_comp(State,D_max,comp_error);
-    
+    State = Iter_comp(State,comp_error,D_max);
     State = apply(U_odd_half,State);
-    State = Iter_comp(State,D_max,comp_error);
+    [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max);
+    
+    %     State = apply(U,State);
+    %     [State,canon,acc] = Iter_comp(State,D_max,comp_error);
+    %     Fidelities(i) = acc;
+    
+    Fidelities(i) = acc;
+    sweeps(i) = sw;
 end
-toc 
-%%
-save(filename,'Magnetizations')
-%%
+
+evaluations = Canon_evaluator(State,canon,S_Z_mpo,Q_mpo);
+Magnetizations(:,steps+1) = real(evaluations{1});
+Currents(:,steps+1) = real(evaluations{2});
+
+
+save(filename,'Magnetizations','Currents','Fidelities','sweeps')
+end
+

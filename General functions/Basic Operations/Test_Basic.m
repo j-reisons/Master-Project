@@ -1,7 +1,7 @@
 close all;
 clear all;
 
-N = 10;     % Number of sites
+N = 5;     % Number of sites
 d = 2;      % Local H-space dimension
 D_S = 2;    % State bond dim
 D_O = 3;    % Operator bond dim
@@ -73,7 +73,7 @@ Mprime = apply(O,M);
 newstate = expand_MPS(Mprime);
 %%
 fprintf('Testing MPO*MPS...');
-assert(isequal(newstate,ham*neel))
+assert(approx(max(newstate-ham*neel),0,1E-10));
 fprintf('\t\tdone\n');
 %%
 fprintf('Testing scalar product...');

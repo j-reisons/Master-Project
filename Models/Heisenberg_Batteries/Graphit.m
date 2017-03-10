@@ -2,19 +2,17 @@ clc
 close all
 clear all
 %%
-load('N=10_J=2_Uc=1_Ub=0_T=5_Dmax=100.mat')
-
-oneU = Magnetizations;
-
-load('Batteries_N10_Ub0_Uc1_T5_Dmax100_testing.mat')
-
-threeU = Magnetizations;
-
-diff = oneU-threeU;
-%%
-imagesc(oneU)
+load('C:\Users\Juris\Documents\MATLAB\Master Project\Models\Heisenberg_Batteries\Batteries_N10_Ub0_Uc1,1_T5_Dmax100_threeU.mat')
 figure
-imagesc(threeU)
+imagesc(Magnetizations)
 figure
-imagesc(diff)
+imagesc(Currents)
 %%
+load('C:\Users\Juris\Documents\MATLAB\Master Project\Models\Heisenberg_Batteries\Batteries_N10_Ub0_Uc0,5_T5_Dmax100_testing.mat')
+
+%%
+figure
+imagesc(Currents)
+%%
+figure
+imagesc(Magnetizations)

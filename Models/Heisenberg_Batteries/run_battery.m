@@ -81,7 +81,6 @@ for i = 1:steps
     
     State = apply(U,State);
     [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max);
-    Fidelities(i) = acc;
     
     Fidelities(i) = acc;
     sweeps(i) = sw;

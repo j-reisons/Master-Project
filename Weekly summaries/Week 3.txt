@@ -7,5 +7,6 @@ Will now try to reproduce Giacommo results for U_b = 0 and U_c = 0,5 and 1,1 .
 
 From Giacommo paper, length of simulation should be t = (0.5*N)/J.
 
-I can not seem to reproduce insulating phase with U_c = 1,1 for N = 10. Perhaps finite size. Trying U_c = 1,5 .
+I can not seem to reproduce insulating phase with U_c = 1,1 for N = 10. Perhaps finite size. Trying U_c = 1,5 . Seems to work for U_c = 1,5
 
+	

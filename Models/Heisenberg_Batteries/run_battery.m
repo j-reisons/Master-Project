@@ -1,19 +1,17 @@
-function run_battery(N,U_c,U_b)
+function run_battery(N,U_c,U_b,tag)
 
 J = 1;
 d = 2;
 
-D_start = 30;
-D_max = 100;
+D_start = 100;
+D_max = 400;
 
 T = N/(2*J);
-dt = 0.05;
+dt = 0.05/J;
 steps = round(T/dt);
 
 ground_error = 1E-8;
 comp_error = 1E-9;
-
-tag = 'threeU';
 
 filename = ['Batteries','_N',strrep(num2str(N),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
     ,'_Uc',strrep(num2str(U_c),'.',','),'_','T',strrep(num2str(T),'.',','),'_','Dmax',num2str(D_max)...
@@ -70,21 +68,20 @@ State = sweep(State,1);
 canon = 1;
 
 for i = 1:steps
-    i
     evaluations = Canon_evaluator(State,canon,S_Z_mpo,Q_mpo);
     Magnetizations(:,i) = real(evaluations{1});
     Currents(:,i) = real(evaluations{2});
     
-    State = apply(U_odd_half,State);
-    State = Iter_comp(State,comp_error,D_max);
-    State = apply(U_even_dt,State);
-    State = Iter_comp(State,comp_error,D_max);
-    State = apply(U_odd_half,State);
-    [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max);
+    %     State = apply(U_odd_half,State);
+    %     State = Iter_comp(State,comp_error,D_max);
+    %     State = apply(U_even_dt,State);
+    %     State = Iter_comp(State,comp_error,D_max);
+    %     State = apply(U_odd_half,State);
+    %     [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max);
     
-    %     State = apply(U,State);
-    %     [State,canon,acc] = Iter_comp(State,D_max,comp_error);
-    %     Fidelities(i) = acc;
+    State = apply(U,State);
+    [State,canon,acc] = Iter_comp(State,D_max,comp_error);
+    Fidelities(i) = acc;
     
     Fidelities(i) = acc;
     sweeps(i) = sw;

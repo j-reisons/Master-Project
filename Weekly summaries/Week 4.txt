@@ -1,0 +1,10 @@
+Monday
+
+This week, I try to reproduce conducting/insulating phase transition results from Giacommo's paper.
+
+Jobs to launch :
+U_c = 0.5 ; 1.1
+N = 20,30,40,50,60,70.
+
+Simulation time is N/2J , timestep 0.05/J .
+Memory should be barely enough for the bigger jobs, might need to apply and cut immediately for higher chain lengths

@@ -24,7 +24,7 @@ end
 not_eigenstateness = 1;
 criterion = 0;
 
-%% L -> R sweep
+%% L ---> R sweep
 while not_eigenstateness > tol && criterion < 0.8
     
     for j = 1:N-1
@@ -46,7 +46,7 @@ while not_eigenstateness > tol && criterion < 0.8
         L{j+1} = contract(L{j+1},[1,4],conj(MPS{j}),[1,3]);
     end
     
-    %% R -> L sweep
+    %% L <--- R sweep
     for j = N:-1:2
         s = size(MPS{j});
         opts.v0 = reshape(MPS{j},[s(1)*s(2)*s(3),1]);

@@ -7,4 +7,21 @@ U_c = 0.5 ; 1.1
 N = 20,30,40,50,60,70.
 
 Simulation time is N/2J , timestep 0.05/J .
-Memory should be barely enough for the bigger jobs, might need to apply and cut immediately for higher chain lengths
+Memory should be barely enough for the bigger jobs, might need to apply and cut immediately for higher chain lengths.
+
+Conclusion : N = 70 is not manageable memory-wise. N = 60 takes ages, and 20:30:40:50 should be enough for basic scaling from now on.
+Uninteracting bath results were sucesfully reproduced.
+
+I am now going to start investigating interacting bath behavior.
+To start, we will investigate the following points
+Uc = 0.5 , Ub = 0.5 : Do we observe similar behavior to single junction results?
+
+
+non-interacting chain line : Does anything cool happen if we swap interactions in the chain vs the bath?
+Uc = 0 , Ub = 0.5 : Do we observe similar behavior to single junction results?
+Uc = 0 , Ub = 1.1 : Do we observe similar behavior to single junction results?
+
+
+In parallel, I have been implementing the TDVP time evolution code. I tested it on N=10 , U_c = 0.5 U_b = 0. bond dimension 100 fails
+to reproduce results from TMPS algorithm. Perhaps convergence with TDVP requires larger bond dimension than TMPS? We will try for bond dimensions
+200 and 300 on the same system.

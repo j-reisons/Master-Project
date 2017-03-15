@@ -6,7 +6,7 @@ d = 2;
 D_start = D_max;
 
 T = N/(2*J);
-dt = 0.05/J;
+dt = 0.01/J;
 steps = round(T/dt);
 
 ground_error = 1E-8;

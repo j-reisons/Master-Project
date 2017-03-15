@@ -4,11 +4,12 @@ J = 1;
 d = 2;
 
 D_start = 100;
-D_max = 400;
+N
+D_max = 400
 
 T = N/(2*J);
 dt = 0.05/J;
-steps = round(T/dt);
+steps = round(T/dt)
 
 ground_error = 1E-8;
 comp_error = 1E-9;
@@ -68,6 +69,7 @@ State = sweep(State,1);
 canon = 1;
 
 for i = 1:steps
+    i
     evaluations = Canon_evaluator(State,canon,S_Z_mpo,Q_mpo);
     Magnetizations(:,i) = real(evaluations{1});
     Currents(:,i) = real(evaluations{2});

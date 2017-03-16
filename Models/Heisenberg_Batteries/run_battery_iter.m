@@ -6,7 +6,7 @@ d = 2;
 D_start = D_max;
 
 T = N/(2*J);
-dt = 0.01/J;
+dt = 0.05/J;
 steps = round(T/dt);
 
 ground_error = 1E-8;
@@ -69,7 +69,7 @@ for i = 1:steps
     Magnetizations(:,i) = real(evaluations{1});
     Currents(:,i) = real(evaluations{2});
     
-    State = Iter_evolve(State,Hamiltonian,dt); 
+    State = TDVP(State,Hamiltonian,dt); 
 end
 
 evaluations = Canon_evaluator(State,canon,S_Z_mpo,Q_mpo);

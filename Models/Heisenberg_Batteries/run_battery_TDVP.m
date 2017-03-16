@@ -72,7 +72,7 @@ for i = 1:steps
     Magnetizations(:,i) = real(evaluations{1});
     Currents(:,i) = real(evaluations{2});
     
-    State = TDVP_A(State,Hamiltonian,dt); 
+    State = TDVP(State,Hamiltonian,dt); 
 end
 
 evaluations = Canon_evaluator(State,canon,S_Z_mpo,Q_mpo);

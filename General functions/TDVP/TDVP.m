@@ -1,4 +1,4 @@
-function [MPS] = Iter_evolve(MPS,Hamiltonian,dt)
+function [MPS] = TDVP(MPS,Hamiltonian,dt)
 %ITER_EVOLVE INPUT MPS MUST BE RIGHT CANONIZED (-1)
 %Based on Unifying time evolution and optimization with mps paper. 
 

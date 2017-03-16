@@ -80,7 +80,8 @@ for i = 1:steps
     Magnetizations(:,i) = real(evaluations{1});
     Currents(:,i) = real(evaluations{2});
     
-    State = Iter_evolve(State,Hamiltonian,dt); 
+    State = Iter_evolve(State,Hamiltonian,dt);
+    State = sweep(State,-1);
 end
 
 evaluations = Canon_evaluator(State,canon,S_Z_mpo,Q_mpo);

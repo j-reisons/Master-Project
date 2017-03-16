@@ -24,4 +24,6 @@ Uc = 0 , Ub = 1.1 : Do we observe similar behavior to single junction results?
 
 In parallel, I have been implementing the TDVP time evolution code. I tested it on N=10 , U_c = 0.5 U_b = 0. bond dimension 100 fails
 to reproduce results from TMPS algorithm. Perhaps convergence with TDVP requires larger bond dimension than TMPS? We will try for bond dimensions
-200 and 300 on the same system.
+200 and 300 on the same system, as well as lowering timesteps.
+Increasing bond dimension did not help, but reducing timesteps did. Still not converged to the TMPS result. Perhaps TMPS suffers
+from timestep size as well? Should check it's convergence.

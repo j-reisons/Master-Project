@@ -96,6 +96,7 @@ for j = N:-1:2
     end
     
 end
+end
 
 
     function V = RK4_step(V0,fun,dt)
@@ -132,6 +133,3 @@ end
         s_v = size(V_dag);
         B = reshape(V_dag,[s_v(1),s_w(2),s_w(3)]);
     end
-
-end
-

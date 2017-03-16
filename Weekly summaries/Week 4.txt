@@ -27,3 +27,14 @@ to reproduce results from TMPS algorithm. Perhaps convergence with TDVP requires
 200 and 300 on the same system, as well as lowering timesteps.
 Increasing bond dimension did not help, but reducing timesteps did. Still not converged to the TMPS result. Perhaps TMPS suffers
 from timestep size as well? Should check it's convergence.
+
+I realized that I was incorrectly evolving the first and last sites of the chain with TDVP. Fixing this resulted in the TDVP_A
+function, which seems to not mind having timestep 0.01 or 0.05, giving similar results to wrong TDVP with 0.01. Why diminishing
+timestep of wrong TDVP helped is still mystery.
+
+TDVP without evolution of the carryover results in stupid nonsense.
+
+Now writing TDVP_A_B,which both fixes boundary timesteps and builds 1&0 site hamiltonians with only unevolved matrices, instead of
+evolved matrices to the left/right of the site. Does not work at all.
+
+Latest change to TDVP_A is TDVP_A_prime. Tries to fix assymetry of site N

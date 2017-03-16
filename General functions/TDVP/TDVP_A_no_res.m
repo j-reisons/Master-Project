@@ -1,5 +1,5 @@
-function [MPS] = TDVP_A(MPS,Hamiltonian,dt)
-%Refactoring TDVP function a bit, fix first and last site evolution
+function [MPS] = TDVP_no_res(MPS,Hamiltonian,dt)
+%What happens if we don't evolve the residue?
 
 half_dt = dt/2; % We perform 2 sweeps, evolving by dt/2 at each for a second order integrator
 
@@ -26,7 +26,7 @@ end
 
 %% L ---> R sweep
 
-for j = 1:N
+for j = 1:N-1
     
     M0 = MPS{j};
     fun = minus_i_HM(Right{j},Left{j},MPO{j});
@@ -47,8 +47,8 @@ for j = 1:N
         Left{j+1} = contract(Left{j+1},[1,4],conj(MPS{j}),[1,3]);
         
         
-        fun = i_KV(Right{j},Left{j+1});
-        res = RK4_step(res,fun,half_dt);
+%         fun = i_KV(Right{j},Left{j+1});
+%         res = RK4_step(res,fun,half_dt);
         
         % Throwing the residue to the right
         MPS{j+1} = contract(res,2,MPS{j+1},1);
@@ -62,6 +62,9 @@ end
 %% L <--- R sweep
 
 for j = N:-1:1
+    if j == N  
+       half_dt = dt;   % Dirty fix for site N
+    end
     
     M0 = MPS{j};
     fun = minus_i_HM(Right{j},Left{j},MPO{j});
@@ -79,10 +82,9 @@ for j = N:-1:1
         end
         Right{j-1} = contract(Right{j-1},[1,4],MPO{j},[2,4]);
         Right{j-1} = contract(Right{j-1},[1,4],conj(MPS{j}),[2,3]);
-        
-        
-        fun = i_KV(Right{j-1},Left{j});
-        res = RK4_step(res,fun,half_dt);
+               
+%         fun = i_KV(Right{j-1},Left{j});
+%         res = RK4_step(res,fun,half_dt);
         
         % Throwing the residue to the left
         MPS{j-1} = contract(MPS{j-1},2,res,1);
@@ -92,6 +94,9 @@ for j = N:-1:1
         MPS{j} = MPS{j}*sign(res);
     end
     
+    if j == N
+        half_dt = dt/2;   % Dirty fix for site N
+    end
 end
 
 end

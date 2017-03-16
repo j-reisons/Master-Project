@@ -1,4 +1,4 @@
-function run_battery_iter(N,U_c,U_b,D_max,tag)
+function run_battery_TDVP(N,U_c,U_b,D_max,tag)
 
 J = 1;
 d = 2;
@@ -69,7 +69,7 @@ for i = 1:steps
     Magnetizations(:,i) = real(evaluations{1});
     Currents(:,i) = real(evaluations{2});
     
-    State = TDVP(State,Hamiltonian,dt); 
+    State = TDVP_A(State,Hamiltonian,dt); 
 end
 
 evaluations = Canon_evaluator(State,canon,S_Z_mpo,Q_mpo);
@@ -77,5 +77,5 @@ Magnetizations(:,steps+1) = real(evaluations{1});
 Currents(:,steps+1) = real(evaluations{2});
 
 
-save(filename,'Magnetizations','Currents','State')
+save(filename,'Magnetizations','Currents')
 end

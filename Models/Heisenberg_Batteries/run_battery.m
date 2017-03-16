@@ -1,21 +1,22 @@
-function run_battery(N,U_c,U_b,tag)
+function run_battery(N,U_c,U_b,dt,D_max,tag)
 
 J = 1;
 d = 2;
 
-D_start = 100;
+D_start = round(D_max/4);
+
 N
-D_max = 400
+D_max
+dt
 
 T = N/(2*J);
-dt = 0.05/J;
 steps = round(T/dt)
 
 ground_error = 1E-8;
 comp_error = 1E-9;
 
 filename = ['Batteries','_N',strrep(num2str(N),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
-    ,'_Uc',strrep(num2str(U_c),'.',','),'_','T',strrep(num2str(T),'.',','),'_','Dmax',num2str(D_max)...
+    ,'_Uc',strrep(num2str(U_c),'.',','),'_','dt',strrep(num2str(dt),'.',','),'_','Dmax',num2str(D_max)...
     ,'_',tag,'.mat'];
 
 %% Initial state preparation

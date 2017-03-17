@@ -1,4 +1,4 @@
-function run_battery(N,U_c,U_b,dt,D_max,tag)
+function run_battery_Xstate(N,U_c,U_b,dt,D_max,tag)
 
 J = 1;
 d = 2;
@@ -17,7 +17,7 @@ steps = round(T/dt)
 ground_error = 1E-8;
 comp_error = 1E-7;
 
-filename = ['Batteries','_N',strrep(num2str(N),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
+filename = ['BatteriesXstate','_N',strrep(num2str(N),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
     ,'_Uc',strrep(num2str(U_c),'.',','),'_','dt',strrep(num2str(dt),'.',','),'_','Dmax',num2str(D_max)...
     ,'_',tag,'.mat'];
 
@@ -29,15 +29,27 @@ Up(1,1,1) = 1;
 Down = zeros(1,1,2);
 Down(1,1,2) = 1;
 
-H_Heis = Heisenberg_H(N,J,U_c);
-MPS = random_mps(N,D_start,d,-1);
-Ground = Iter_ground(H_Heis,MPS,ground_error);
+Left = zeros(1,2,2);
+Left(1,1,1) = 1;
+Left(1,2,2) = 1;
+
+Bulk = zeros(2,2,2);
+Bulk(1,1,1) = 1;
+Bulk(2,2,2) = 1;
+
+Right = zeros(2,1,2);
+Right(1,1,1) = 1;
+Right(2,1,2) = 1;
 
 for i=1:N
     State{i} = Up;
-    State{N+i} = Ground{i};
+    State{N+i} = Bulk;
     State{2*N + i} = Down;
 end
+
+State{N+1} = Left;
+State{2*N} = Right;
+
 
 %%
 [U_even_dt,U_odd_dt] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt);

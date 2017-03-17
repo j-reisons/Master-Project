@@ -1,6 +1,6 @@
-function [mps_out,canon,acc,sweeps] = Iter_comp(mps_in,tol,D_max)
-% Iteratively compresses MPS to D_max and tol. svdtype indicates svd or rsvd for initial guess
-%
+function [mps_out,canon,accs,sweeps] = Iter_comp(mps_in,tol,D_max,alpha,freesweeps)
+% Iteratively compresses MPS to D_max and tol. alpha and freesweeps are
+% convergence criteria
 %
 % Stops if tolerance is reached, or if iterations no longer provide
 % enough increase.
@@ -14,10 +14,14 @@ s = size(mps_in{1});
 N = length(mps_in);
 
 mps_out = sweep(mps_in,-1,tol,D_max);
+canon = -1;
 
-acc = 1;
 criterion = 0;
 sweeps = 0;
+
+acc = norm(1 - real(braket(mps_in,mps_out)));
+accs = [];
+accs(sweeps + 1) = acc;
 
 R = cell(1,N);
 R{N} = 1;
@@ -32,7 +36,7 @@ for j = N-1 : -1 : 1
     R{j} = contract(mps_in{j+1},[2,3],R{j},[1,3]);
 end
 
-while criterion < 0.8 && acc > tol
+while criterion < 1 && acc > tol
     
     % L -> R sweep
     for i = 1:N
@@ -52,9 +56,10 @@ while criterion < 0.8 && acc > tol
     
     % Stopping criteria
     prev = acc;
-    acc = norm(1 - L{N+1});
-    criterion = acc/prev;
-    if criterion > 0.8 || acc < tol
+    acc = norm(1 - real(L{N+1}));
+    accs(sweeps+1) = acc;
+    criterion = (acc/accs(2))*(alpha^(freesweeps - sweeps));
+    if criterion > 1 || acc < tol
         canon = 1;
         break
     end
@@ -81,8 +86,9 @@ while criterion < 0.8 && acc > tol
     
     % Stopping criteria
     prev = acc;
-    acc = norm(1 - err);
-    criterion = acc/prev;
+    acc = norm(1 - real(err));
+    accs(sweeps+1) = acc;
+    criterion = (acc/accs(2))*(alpha^(freesweeps - sweeps));
     canon = -1;
 end
 end

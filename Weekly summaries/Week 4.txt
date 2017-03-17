@@ -12,15 +12,17 @@ Memory should be barely enough for the bigger jobs, might need to apply and cut 
 Conclusion : N = 70 is not manageable memory-wise. N = 60 takes ages, and 20:30:40:50 should be enough for basic scaling from now on.
 Uninteracting bath results were sucesfully reproduced.
 
+----------------------------------------------------------------------------------
+
 I am now going to start investigating interacting bath behavior.
 To start, we will investigate the following points
 Uc = 0.5 , Ub = 0.5 : Do we observe similar behavior to single junction results?
-
 
 non-interacting chain line : Does anything cool happen if we swap interactions in the chain vs the bath?
 Uc = 0 , Ub = 0.5 : Do we observe similar behavior to single junction results?
 Uc = 0 , Ub = 1.1 : Do we observe similar behavior to single junction results?
 
+----------------------------------------------------------------------------------
 
 In parallel, I have been implementing the TDVP time evolution code. I tested it on N=10 , U_c = 0.5 U_b = 0. bond dimension 100 fails
 to reproduce results from TMPS algorithm. Perhaps convergence with TDVP requires larger bond dimension than TMPS? We will try for bond dimensions
@@ -37,4 +39,33 @@ TDVP without evolution of the carryover results in stupid nonsense.
 Now writing TDVP_A_B,which both fixes boundary timesteps and builds 1&0 site hamiltonians with only unevolved matrices, instead of
 evolved matrices to the left/right of the site. Does not work at all.
 
-Latest change to TDVP_A is TDVP_A_prime. Tries to fix assymetry of site N
+Latest change to TDVP_A is TDVP_A_prime. Tries to fix assymetry of site N. It seems to converge to Trotter now.
+However, it seems to be very sensitive with respect to time step, and requires significantly smaller steps than Trotter to converge
+to same result.
+
+
+----------------------------------------------------------------------------------
+Uc=Ub results display no finite size scaling effect, only a transition from isolating to conducting based on the resistance of the chain.
+It has instead been decided to better characterize the non-interacting chain line. 
+
+----------------------------------------------------------------------------------
+It turns out that the strongly interacting Uc=0 chain is the nastiest problem I have treated yet in terms of entanglement.
+The ground state in the middle is a highly entangled superfuild apparently.
+Fidelities go to shit (Up to 3% for N=50 JT/N=0.5 D=400 dt=0.05).
+Left and Right junction currents however remain almost identical : the shitty compression is remarkably symetrical.
+Junction currents and charge derivative are however widly divergent. This self-consistency condition gets noticeably
+violated when compression fidelities dip below 1E-4. 1E-3 still yield acceptable-ish results. 1E-2 is trash.
+1E-4 thus seems to be the magic number for this problem.
+
+Proposals to remedy this are threefold . In order :
+- Tweak number of sweeps : right now it is always 2 sweeps (1 back and forth), due to constraint to decrease fidelity by 20% at each iteration or quit.
+Indeed, while monotonic, Iterative compression is prone to get stuck, and sweeps are not nearly as expensive as SVD. I might be penny-wise, pound-foolish.
+
+- Work with a less-entangled starting state, for instance X state (global superposition of Up+Down)
+
+- Increase bond dimension
+
+I will try a new criterion to give up : I now require that each step reduces the fidelity by 1-alpha only asymptotically : Instead of f_i+1/f_i < alpha ,
+I allow f_n/f_i < alpha^n. Furthermore, to give some leeway for iterations that get stuck but eventually dramatically improve, I have added a certain number
+of free sweeps : (f_n/f_i) < alpha^(n-f)
+Still asymptotic decrease of fidelity of 1-alpha by step , but with still more kindness. I should therefore never do less than freesweeps+1 sweeps.

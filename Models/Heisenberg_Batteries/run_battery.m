@@ -9,7 +9,7 @@ N
 D_max
 dt
 alpha = 0.8
-freesweeps = 5
+freesweeps = 2
 
 T = N/(2*J);
 steps = round(T/dt)
@@ -30,19 +30,22 @@ Down = zeros(1,1,2);
 Down(1,1,2) = 1;
 
 H_Heis = Heisenberg_H(N,J,U_c);
-MPS = random_mps(N,D_start,d,-1);
-Ground = Iter_ground(H_Heis,MPS,ground_error);
+Ground = random_mps(N,D_start,d,-1);
+Ground = Iter_ground(H_Heis,Ground,ground_error);
 
 for i=1:N
     State{i} = Up;
     State{N+i} = Ground{i};
     State{2*N + i} = Down;
 end
+clear H_Heis Ground Up Down
 
 %%
 [U_even_dt,U_odd_dt] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt);
 [U_even_half,U_odd_half] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt/2);
 U = compressMPO(U_odd_half,U_even_dt,U_odd_half);
+
+clear U_even_dt U_odd_dt U_even_half U_odd_half
 
 Converging_accuracies = cell(1,steps);
 Magnetizations = zeros(3*N,steps+1);
@@ -68,6 +71,8 @@ Q_2(1,1,:,:) = S_Y*((2*J)^0.5);
 Q_2(2,1,:,:) = - S_X*((2*J)^0.5);
 Q_mpo{2} = Q_2;
 
+clear S_Z S_X S_Y S_Z_1 Q_1 Q_2
+
 %%
 State = sweep(State,1);
 canon = 1;
@@ -85,12 +90,15 @@ for i = 1:steps
     %     State = apply(U_odd_half,State);
     %     [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max);
     
-    State = apply(U,State);
-    [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max,alpha,freesweeps);
+    %     State = apply(U,State);
+    %     [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max,alpha,freesweeps);
+    
+    [State,canon,acc,sw] = cheap_apply_compress(State,U,comp_error,D_max,alpha,freesweeps);
     
     Fidelities(i) = acc(end);
     Converging_accuracies{i} = acc;
     sweeps(i) = sw;
+    
 end
 
 evaluations = Canon_evaluator(State,canon,S_Z_mpo,Q_mpo);

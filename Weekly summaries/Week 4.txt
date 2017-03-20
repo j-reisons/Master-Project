@@ -69,3 +69,5 @@ I will try a new criterion to give up : I now require that each step reduces the
 I allow f_n/f_i < alpha^n. Furthermore, to give some leeway for iterations that get stuck but eventually dramatically improve, I have added a certain number
 of free sweeps : (f_n/f_i) < alpha^(n-f)
 Still asymptotic decrease of fidelity of 1-alpha by step , but with still more kindness. I should therefore never do less than freesweeps+1 sweeps.
+
+Launching all three possible remedies before leaving on week-end for N=40 .

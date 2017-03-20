@@ -1,5 +1,2 @@
-profile on
-n = 100;
-M = magic(n)
-profsave
+run_battery(10,1,0,0.1,50,'test')
 %%

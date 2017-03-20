@@ -97,8 +97,10 @@ for i = 1:steps
     %     State = apply(U_odd_half,State);
     %     [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max);
     
-    State = apply(U,State);
-    [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max,alpha,freesweeps);
+    %     State = apply(U,State);
+    %     [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max,alpha,freesweeps);
+    
+    [State,canon,acc,sw] = cheap_apply_compress(State,U,comp_error,D_max,alpha,freesweeps);
     
     Fidelities(i) = acc(end);
     Converging_accuracies{i} = acc;

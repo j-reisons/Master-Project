@@ -8,3 +8,6 @@ both ran out of memory. I wrote a small script to estimate memory needs.
 
 I wrote a memory-cheap implementation of apply-compress that recomputes MPO_MPS tensor elements on the fly when
 they are needed, thus never storing the Large MPS.
+
+Relaunching with new implementation.
+

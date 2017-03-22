@@ -12,13 +12,13 @@ dt = 0.05;
 D_max = 400;
 
 tag = 'oneU';
-
 %% Filenames et al.
 
 Charges = cell(1);
 dC_dts = cell(1);
 Interfaces_left = cell(1);
 Interfaces_right = cell(1);
+Fidelities_cell = cell(1);
 Times = cell(1);
 
 i = 1;
@@ -57,6 +57,9 @@ Interfaces_left{i} = Interface_left;
 Interface_right = Currents(2*N(i),:);
 Interfaces_right{i} = Interface_right;
 
+% Fidelities
+Fidelities_cell{i} = [0,Fidelities];
+
 % Rescaled times
 Time = linspace(0,0.5,(10*N(i))+1);
 Times{i} = Time;
@@ -90,3 +93,16 @@ legend('show')
 xlabel('Jt / N');
 ylabel('Interface Current');
 
+%% Fidelity plot
+
+figure3 = figure('Name',['Fidelities for Ub = ',num2str(U_b),' Uc = ',num2str(U_c), ' Dmax = ',num2str(D_max)],'Color',[1 1 1]);
+
+for i = 1:length(N)
+    semilogy(Times{i},Fidelities_cell{i},'DisplayName',['N = ',num2str(N(i))],'color',col(2*(i-1) + 1,:))
+    hold on
+end
+hold off
+
+legend('show')
+xlabel('Jt / N');
+ylabel('Fidelities');

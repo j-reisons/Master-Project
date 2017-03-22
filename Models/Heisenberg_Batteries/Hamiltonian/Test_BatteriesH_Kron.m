@@ -11,7 +11,7 @@ d = 2;
 dim = 2^(3*N);
 
 %%
-MPO = Batteries_H(N,J,Uc,Ub);
+MPO = Batteries_H(N,N,J,Uc,Ub);
 %% Kroning
 
 S_X =[0,1;1,0];

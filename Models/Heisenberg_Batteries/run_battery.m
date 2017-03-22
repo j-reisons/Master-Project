@@ -1,55 +1,60 @@
-function run_battery(N,U_c,U_b,dt,D_max,tag)
+function run_battery(Nc,Nb,U_c,U_b,dt,D_max,freesweeps,tag)
 
 J = 1;
 d = 2;
 
 D_start = round(D_max/4);
 
-N
+Nc
+Nb
 D_max
 dt
 alpha = 0.9
-freesweeps = 50
+freesweeps
 
-T = N/(2*J);
+T = Nb/(2*J);
 steps = round(T/dt)
 
 ground_error = 1E-8;
 comp_error = 1E-7;
 
-filename = ['Batteries','_N',strrep(num2str(N),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
-    ,'_Uc',strrep(num2str(U_c),'.',','),'_','dt',strrep(num2str(dt),'.',','),'_','Dmax',num2str(D_max)...
-    ,'_',tag,'.mat'];
+filename = ['Batteries','_Nc',strrep(num2str(Nc),'.',','),'_Nb',strrep(num2str(Nb),'.',',')...
+    ,'_Ub',strrep(num2str(U_b),'.',',')...
+    ,'_Uc',strrep(num2str(U_c),'.',','),'_dt',strrep(num2str(dt),'.',','),'_Dmax',num2str(D_max)...
+    ,'_f',num2str(freesweeps),'_',tag,'.mat'];
 
 %% Initial state preparation
-State = cell(1,3*N);
+State = cell(1,2*Nb + Nc);
 
 Up = zeros(1,1,2);
 Up(1,1,1) = 1;
 Down = zeros(1,1,2);
 Down(1,1,2) = 1;
 
-H_Heis = Heisenberg_H(N,J,U_c);
-Ground = random_mps(N,D_start,d,-1);
+H_Heis = Heisenberg_H(Nc,J,U_c);
+Ground = random_mps(Nc,D_start,d,-1);
 Ground = Iter_ground(H_Heis,Ground,ground_error);
 
-for i=1:N
+for i=1:Nb
     State{i} = Up;
-    State{N+i} = Ground{i};
-    State{2*N + i} = Down;
+    State{Nb + Nc + i} = Down;
 end
+for i=1:Nc
+    State{Nb + i} = Ground{i};
+end
+
 clear H_Heis Ground Up Down
 
 %%
-[U_even_dt,U_odd_dt] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt);
-[U_even_half,U_odd_half] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt/2);
+[U_even_dt,U_odd_dt] = Heisenberg_Batteries_U(Nc,Nb,J,U_b,U_c,dt);
+[U_even_half,U_odd_half] = Heisenberg_Batteries_U(Nc,Nb,J,U_b,U_c,dt/2);
 U = compressMPO(U_odd_half,U_even_dt,U_odd_half);
 
 clear U_even_dt U_odd_dt U_even_half U_odd_half
 
 Converging_accuracies = cell(1,steps);
-Magnetizations = zeros(3*N,steps+1);
-Currents = zeros(3*N - 1,steps+1);
+Magnetizations = zeros(Nc + 2*Nb,steps+1);
+Currents = zeros(Nc + 2*Nb - 1,steps+1);
 Fidelities = zeros(1,steps);
 sweeps = zeros(1,steps);
 
@@ -105,6 +110,6 @@ Magnetizations(:,steps+1) = real(evaluations{1});
 Currents(:,steps+1) = real(evaluations{2});
 
 
-save(filename,'Magnetizations','Currents','Fidelities','Converging_accuracies','sweeps')
+save(filename,'Magnetizations','Currents','Fidelities','Converging_accuracies','sweeps','Nc','Nb')
 end
 

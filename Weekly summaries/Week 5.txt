@@ -9,5 +9,11 @@ both ran out of memory. I wrote a small script to estimate memory needs.
 I wrote a memory-cheap implementation of apply-compress that recomputes MPO_MPS tensor elements on the fly when
 they are needed, thus never storing the Large MPS.
 
-Relaunching with new implementation.
+----------------------------------------------------------------------------------------
+
+Group meeting : decided to focus on the Uc = Ub line for now, and a line close to the Ub = 0 line to see if the diffusive Heisenberg point
+opens up into more than a single point of diffusive behavior.
+
+The initial results for 0.5 and 1.1 show system size independent behavior, but a qualitative change between current going to a constant positive
+value or what seems to be 0 for 1.1. To be sure that the current converges to 0 longer chains and longer time dynamics seem necessary.
 

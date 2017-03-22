@@ -1,8 +1,8 @@
-function [H] = Batteries_H (N,J,Uc,Ub)
+function [H] = Batteries_H (Nc,Nb,J,Uc,Ub)
 % Batteries_H Returns MPO representation of XXZ B
 % Procedure outline in Schollwock 6.1
 
-H = cell(1,3*N);
+H = cell(1,Nc + 2*Nb);
 
 S_X = [0,1;1,0];
 S_Y = [0,-1i;1i,0];
@@ -39,18 +39,18 @@ right(3,1,:,:) = S_Y;
 right(4,1,:,:) = S_Z;
 
 H{1} = left;
-for i = 2:N
+for i = 2:Nb
     H{i} = bulk_bath;
 end
 
-for i = N+1:(2*N)-1
+for i = Nb+1:Nb + Nc - 1
     H{i} = bulk_chain;
 end
 
-for i = 2*N:(3*N)-1
+for i = Nb + Nc:Nc + 2*Nb -1
     H{i} = bulk_bath;
 end
 
-H{3*N} = right;
+H{Nc + 2*Nb} = right;
 end
 

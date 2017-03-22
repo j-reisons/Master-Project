@@ -1,11 +1,13 @@
-function [U_even,U_odd] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt)
+function [U_even,U_odd] = Heisenberg_Batteries_U(Nc,Nb,J,U_b,U_c,dt)
 %HEISENBERG_Batteries Returns Even and odd evolution operators
 %Hamiltonian of parameters N,J,U,dt
 %Outlined in Schollwock 7.1.1 p75 and 7.1.2 p 77
 %% Pauli and co
 d = 2;
 
-noteven = mod(N,2);
+notevenB = mod(Nb,2);
+notevenBC = mod(Nb+Nc,2);
+notevenBCB = mod(2*Nb+Nc,2);
 
 S_X =[0,1;1,0];
 
@@ -50,67 +52,80 @@ I_site = reshape(eye(2),[1,1,d,d]);% 1,1,sig,sig'
 
 %% Odd bonds
 
-U_odd = cell(1,3*N);
+U_odd = cell(1,Nc + 2*Nb);
 
-for i = 1 : 2 : N;
+for i = 1 : 2 : Nb;
     U_odd{i}= U_c{1};
     U_odd{i+1}= U_bar_c{1};
 end
 
-if noteven
-    for i = N+2 : 2 : 2*N - 1;
+if notevenB
+    for i = Nb+2 : 2 : Nb + Nc - 1;
     U_odd{i}= U_c{2};
     U_odd{i+1}= U_bar_c{2};
     end
 else
-    for i = N+1 : 2 : 2*N - 1;
+    for i = Nb+1 : 2 : Nb + Nc - 1;
     U_odd{i}= U_c{2};
     U_odd{i+1}= U_bar_c{2};
     end
 end
 
-for i = 2*N + 1 : 2 : (3*N)-1;
-    U_odd{i}= U_c{1};
-    U_odd{i+1}= U_bar_c{1};
+if notevenBC
+    for i = Nb + Nc : 2 : 2*Nb + Nc - 1;
+        U_odd{i}= U_c{1};
+        U_odd{i+1}= U_bar_c{1};
+    end
+else
+    for i = Nb + Nc + 1 : 2 : 2*Nb + Nc - 1;
+        U_odd{i}= U_c{1};
+        U_odd{i+1}= U_bar_c{1};
+    end
 end
 
 %Chain length parity
-if noteven
-    U_odd{3*N} = I_site;
+if notevenBCB
+    U_odd{Nb*2 + Nc} = I_site;
 end
 
 
 %% Even bonds
 
-U_even = cell(1,3*N);
+U_even = cell(1,Nc + 2*Nb);
 U_even{1}= I_site;
 
-for i = 2 : 2 : N;
+for i = 2 : 2 : Nb;
     U_even{i} = U_c{1};
     U_even{i+1} = U_bar_c{1};
 end
 
-if noteven
-    for i = N+1 : 2 :(2*N)-1;
+if notevenB
+    for i = Nb+1 : 2 :Nb + Nc -1;
         U_even{i} = U_c{2};
         U_even{i+1} = U_bar_c{2};
-    end
-    
+    end   
 else
-    for i = N+2 : 2 : (2*N)-1;
+    for i = Nb+2 : 2 :Nb + Nc -1;
         U_even{i} = U_c{2};
         U_even{i+1} = U_bar_c{2};
     end
 end
 
-for i = 2*N : 2 : (3*N) -1
-    U_even{i} = U_c{1};
-    U_even{i+1} = U_bar_c{1};
+if notevenBC
+    for i = Nb + Nc + 1 : 2 : 2*Nb + Nc -1
+        U_even{i} = U_c{1};
+        U_even{i+1} = U_bar_c{1};
+    end
+else
+    for i = Nb + Nc : 2 : 2*Nb + Nc -1
+        U_even{i} = U_c{1};
+        U_even{i+1} = U_bar_c{1};
+    end
 end
 
 %Chain length parity
-if ~noteven
-    U_even{3*N} = I_site;
+if ~notevenBCB
+    U_even{Nb*2 + Nc} = I_site;
 end
 
 end

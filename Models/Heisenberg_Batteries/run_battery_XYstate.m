@@ -1,4 +1,4 @@
-function run_battery_Xstate(N,U_c,U_b,dt,D_max,tag)
+function run_battery_XYstate(N,U_c,U_b,dt,D_max,tag)
 
 J = 1;
 d = 2;
@@ -42,7 +42,9 @@ Right(2,1,2) = 1;
 
 for i=1:N
     State{i} = Up;
-    State{N+i} = Bulk;
+    PhasedBulk = Bulk;
+    PhasedBulk(2,2,2) = PhasedBulk(2,2,2)*exp(1i*2*pi*rand);
+    State{N+i} = PhasedBulk;
     State{2*N + i} = Down;
 end
 

@@ -9,14 +9,14 @@ N
 D_max
 dt
 alpha = 0.8
-freesweeps = 2
+freesweeps = 5
 
 T = N/(2*J);
 steps = round(T/dt)
 
 comp_error = 1E-7;
 
-filename = ['BatteriesXstate','_N',strrep(num2str(N),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
+filename = ['BatteriesXYstate','_N',strrep(num2str(N),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
     ,'_Uc',strrep(num2str(U_c),'.',','),'_','dt',strrep(num2str(dt),'.',','),'_','Dmax',num2str(D_max)...
     ,'_',tag,'.mat'];
 
@@ -53,8 +53,8 @@ State{2*N} = Right;
 
 
 %%
-[U_even_dt,U_odd_dt] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt);
-[U_even_half,U_odd_half] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt/2);
+[U_even_dt,U_odd_dt] = Heisenberg_Batteries_U(N,N,J,U_b,U_c,dt);
+[U_even_half,U_odd_half] = Heisenberg_Batteries_U(N,N,J,U_b,U_c,dt/2);
 U = compressMPO(U_odd_half,U_even_dt,U_odd_half);
 
 Converging_accuracies = cell(1,steps);

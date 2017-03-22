@@ -2,7 +2,7 @@ clc
 close all
 clear all
 %%
-A = random_mps(12,100,2);
+A = random_mps(15,100,2);
 
 fprintf('Old took\n')
 tic

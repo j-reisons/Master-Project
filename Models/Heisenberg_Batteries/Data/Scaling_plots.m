@@ -33,6 +33,14 @@ filename = ['Batteries','_N',strrep(num2str(N(i)),'.',',') ,'_Ub',strrep(num2str
     ,'_Uc',strrep(num2str(U_c),'.',','),'_','T',strrep(num2str(T),'.',','),'_','Dmax',num2str(D_max)...
     ,'_',tag,'.mat'];
 
+% filename = ['Batteries','_N',strrep(num2str(N(i)),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
+%     ,'_Uc',strrep(num2str(U_c),'.',','),'_','dt',strrep(num2str(dt),'.',','),'_','Dmax',num2str(D_max)...
+%     ,'_',tag,'.mat'];
+
+% filename = ['BatteriesXstate','_N',strrep(num2str(N(i)),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
+%     ,'_Uc',strrep(num2str(U_c),'.',','),'_','dt',strrep(num2str(dt),'.',','),'_','Dmax',num2str(D_max)...
+%     ,'_',tag,'.mat'];
+
 load(filename);
 
 % Magnetization charge
@@ -58,7 +66,7 @@ end
 figure1 = figure('Name',['Battery charges for Ub = ',num2str(U_b),' Uc = ',num2str(U_c)],'Color',[1 1 1]);
 
 for i = 1:length(N)
-    plot(Times{i},Charges{i},'DisplayName',['N = ',num2str(N(i))],'color',col(i,:))
+    plot(Times{i},Charges{i},'DisplayName',['N = ',num2str(N(i))],'color',col(2*i,:))
     hold on
 end
 hold off
@@ -71,9 +79,9 @@ ylabel('Charge');
 figure2 = figure('Name',['Interface current for Ub = ',num2str(U_b),' Uc = ',num2str(U_c)],'Color',[1 1 1]);
 
 for i = 1:length(N)
-    plot(Times{i},Interfaces_left{i},'DisplayName',['Left N = ',num2str(N(i))],'color',col(i,:))
+    plot(Times{i},Interfaces_left{i},'DisplayName',['Left N = ',num2str(N(i))],'color',col(2*(i-1) + 1,:))
     hold on
-    plot(Times{i},Interfaces_right{i},'DisplayName',['Right N = ',num2str(N(i))],'color',col(i,:))
+    %plot(Times{i},Interfaces_right{i},'DisplayName',['Right N = ',num2str(N(i))],'color',col(i,:))
     plot(Times{i},dC_dts{i},'DisplayName',['dCdT N = ',num2str(N(i))],'color',col(2*i,:))
 end
 hold off

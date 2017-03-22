@@ -8,8 +8,8 @@ D_start = round(D_max/4);
 N
 D_max
 dt
-alpha = 0.8
-freesweeps = 2
+alpha = 0.9
+freesweeps = 50
 
 T = N/(2*J);
 steps = round(T/dt)

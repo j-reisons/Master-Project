@@ -9,7 +9,7 @@ N
 D_max
 dt
 alpha = 0.8
-freesweeps = 2
+freesweeps = 3
 
 T = N/(2*J);
 steps = round(T/dt)

@@ -9,7 +9,7 @@ Nc
 Nb
 D_max
 dt
-alpha = 0.9
+alpha = 0.8
 freesweeps
 
 T = Nb/(2*J);

@@ -77,6 +77,6 @@ while not_eigenstateness > tol && criterion < 0.8
     
 end
 
-MPS{1} = R_can(MPS,1);
+MPS = R_can(MPS,1);
 ground_MPS = MPS;
 end

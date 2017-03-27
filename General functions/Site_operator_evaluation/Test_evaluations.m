@@ -2,10 +2,10 @@ clc
 close all
 clear all
 %%
-N = 5;
+N = 30;
 J = 1;
-U = 0.5;
-D_start = 15;
+U = 1;
+D_start = 40;
 d = 2;
 ground_error = 1E-7;
 

@@ -3,8 +3,8 @@ close all
 clear all
 %%
 J= 1;
-U_b = 1;
-U_c = 1;
+U_b = 0.9;
+U_c = 0.9;
 
 N = 20:10:50;
 Ncs = N;
@@ -95,6 +95,7 @@ figure2 = figure('Name',['Interface current for Ub = ',num2str(U_b),' Uc = ',num
 for i = 1:length(N)
     plot(Times{i},Interfaces_left{i},'DisplayName',['Left N = ',num2str(N(i))],'color',col(2*(i-1) + 1,:))
     hold on
+    %plot(Times{i},Currents_middle{i},'DisplayName',['Right N = ',num2str(N(i))],'color',col(i,:))
     %plot(Times{i},Interfaces_right{i},'DisplayName',['Right N = ',num2str(N(i))],'color',col(i,:))
     %plot(Times{i},dC_dts{i},'DisplayName',['dCdT N = ',num2str(N(i))],'color',col(2*i,:))
 end

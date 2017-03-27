@@ -1,7 +1,7 @@
 Last Friday I launched three computations for N=40 Uc=0 Ub=1,1. 
 
-One with D=400 and the possibility for more iterative compression sweeps, giving 6 free sweeps. Not once has it changed anything. Perhaps I should allow
-20 or 30 just to be sure that it never results in improvement.
+One with D=400 and the possibility for more iterative compression sweeps, giving 6 free sweeps. Not once has it changed anything. 
+Perhaps I should allow 20 or 30 just to be sure that it never results in improvement.
 
 The two others were with D=600. One with a ground-state and another with and X-state starting state. Unfortunately
 both ran out of memory. I wrote a small script to estimate memory needs.
@@ -18,4 +18,43 @@ The initial results for 0.5 and 1.1 show system size independent behavior, but a
 value or what seems to be 0 for 1.1. To be sure that the current converges to 0 longer chains and longer time dynamics seem necessary.
 I have launched a bunch of them with bond dimensions 100, and Nb = 1.5*Nc .
 
-Another thing to investigate was the phase dependence of the Z transport on phases of the XY state.
+Another thing to investigate was the phase dependence of the Z transport on phases of the XY state. Launched a XY state for comparison
+with X state results.
+
+
+----------------------------------------------------------------------------------------
+
+Length 1.5 chains don't seem to quite converge to a stationary interface current, longer time evolution could be useful to characterize
+it better. Nevertheless, I have measured the dependence of the currents at 0.8 of the time evolution wrt interaction.
+It would seem that currents decrease monotonously with interaction, which was expected.
+
+More interesting is the fact that discounting oscillations, current appears to be system-size independent for
+interactions above and below 1, but there may be a small dependence at 1 : maybe a diffusive point.
+
+Another interesting observation is the existence of two frequencies in the current at the middle of the chain.
+There is the high frequency of the global "chessboard" pattern, that is observed in similar intensity across all
+U (Jz values).
+The other is a much lower frequency oscillation that looks like large blobs on the current figures. These blobs spread along the chain
+as time goes on.
+The intensity of this oscillation is monotonically decreasing with U .
+At U = 0.5, it's frequency is 4 times lower than the fast oscillation.
+At U = 0.8, it's frequency is 5/2 times lower than the fast oscillaion.
+
+It would seem that the timescale for these large oscillations is 1/U and the small oscillations 1/J.
+
+At U = 1.1, there seems to be a third oscillation that appears, of frequency even lower than the precious two.
+Perhaps it goes as 1/(U-1) ???
+
+
+----------------------------------------------------------------------------------------
+Points to investigate - Related Jobs
+
+To finish asymptotic current - Fourier datapoints:
+Nc = 20:50, Nb = 1.5Nc , U=1.2:1.5 D=100,
+
+To investigate if current goes to 0 or fixed value at U=1.1 , try larger bond dimension :
+Nc = 30 , Nb = 45 , D = 200, U = 1.1 ;
+
+
+
+ 

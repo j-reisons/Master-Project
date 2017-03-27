@@ -28,28 +28,17 @@ Up(1,1,1) = 1;
 Down = zeros(1,1,2);
 Down(1,1,2) = 1;
 
-Left = zeros(1,1,2);
-Left(1,1,1) = 1;
-Left(1,1,2) = 0;
-
-Bulk = zeros(2,2,2);
-Bulk(1,1,1) = 1;
-Bulk(1,1,2) = 1;
-
-Right = zeros(2,1,2);
-Right(1,1,1) = 0;
-Right(1,1,2) = 1;
+XYsite = zeros(1,1,2);
+XYsite(1,1,1) = 1;
 
 for i=1:N
     State{i} = Up;
-    PhasedBulk = Bulk;
-    PhasedBulk(2,2,2) = PhasedBulk(2,2,2)*exp(1i*2*pi*rand);
-    State{N+i} = PhasedBulk;
+    XYsite(1,1,2) = exp(1i*2*pi*rand);
+    State{N+i} = XYsite;
     State{2*N + i} = Down;
 end
 
-State{N+1} = Left;
-State{2*N} = Right;
+
 
 
 %%

@@ -27,27 +27,18 @@ Up = zeros(1,1,2);
 Up(1,1,1) = 1;
 Down = zeros(1,1,2);
 Down(1,1,2) = 1;
+Xsite = zeros(1,1,2);
 
-Left = zeros(1,2,2);
-Left(1,1,1) = 1;
-Left(1,2,2) = 1;
+Xsite(1,1,1) = 1;
+Xsite(1,1,2) = 1;
 
-Bulk = zeros(2,2,2);
-Bulk(1,1,1) = 1;
-Bulk(2,2,2) = 1;
-
-Right = zeros(2,1,2);
-Right(1,1,1) = 1;
-Right(2,1,2) = 1;
 
 for i=1:N
     State{i} = Up;
-    State{N+i} = Bulk;
+    State{N+i} = Xsite;
     State{2*N + i} = Down;
 end
 
-State{N+1} = Left;
-State{2*N} = Right;
 
 
 %%

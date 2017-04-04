@@ -3,9 +3,9 @@ close all
 clear all
 %%
 J= 1;
-U = [0.9:0.3:1.5];
+U = 1.3;
 
-N = 50;
+N = [20,50];
 Ncs = N;
 Nbs = 1.5*Ncs;
 
@@ -46,7 +46,7 @@ load(filename);
 
 Current_middle = Currents(round(Nbs + (Ncs/2)),:);
 Currents_middle{i} = Current_middle;
-Treated_middle{i} = Current_middle(Cut+1:end) - mean(Current_middle(Cut+1:end));
+Treated_middle{i} = Current_middle(Cut+1:end) %- mean(Current_middle(Cut+1:end));
 dumb_Fourier_middle{i} = dumbFT(Treated_middle{i},dt,dw);
 FRFFT_middle{i} = FrFFT(Treated_middle{i},dt,dw);
 end

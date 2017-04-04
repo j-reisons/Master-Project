@@ -1,0 +1,33 @@
+The results from the Uc=Ub line computations from this week-end have allowed me to make nice fits of the oscillation frequencies dependence on U.
+Asymptotic current seems to converge to not quite 0 above U = 1 .
+Behavior is independent of system size, even the size of the area affected by the low frequency oscillations
+seems to remain constant at about 10 sites. It seems that the low frequency oscillations are "pooped out" by the curvature
+that joins the two light cone edges, hence the constant size independently of system size.
+
+It seems that I have pretty much investigated what I could investigate on the Uc=Ub line. Let's now try to see behavior
+On the Horizontal line Ub = 0.2 to see if the scaling of the currents departs in some way from the Ub = 0 results.
+
+Behavior at Ub = 0.2 is hard to distinguish from Ub = 0 for two reasons : departure from the uninteracting phase transition
+is slight if it exists, and Fidelities grow rapidly due to high entanglement in this regime, limiting the accuracy of the 
+results and preventing reliable scaling analysis. Another issue is that I do not have the data for Ub=0 aside for the 0.5 and 1.1
+points.
+
+Similar issue occur at Ub = 0.5, but perhaps the difference is marked enough to be measurable even with crappy simulations.
+To investigate it would require to go to bond dimension 400 or even higher, and that gets stupid expensive quick.
+
+Another avenue would be to investigate a vertical line in the isolating phase, say Uc = 1.2 , to try to better undesrtand the nature of the
+Uc=Ub > J phase : it seems to be scale invariant, but is it just isolating with a dramaticaly strong coefficient, or is it some kind of
+ballistic current going to 0 ? If there is a phase transition, as there seems to be, where does it occur? Is the new phase only located on the Uc=Ub
+line ?
+
+On the subject of the Ub=Uc oscillations analysis, it is necessary to confirm that they are a universal feature that resists rescaling and not a finite
+size effect. For this, the scaling of the area affected by the different oscillations as well as of the oscillation amplitude relative to current value must
+be performed.
+
+Analysis of the Fourier transform of the unnormalized signal seems impossible due to the massive sinc ripples from the 0 frequency peak.
+Either do some kind of windowing, or compare the amplitudes on the graph.
+The good news is that slow oscillations do not need this as mean is already pretty much 0.
+Also, it would be interesting to study the scaling of the boundary region (steepness of the magnetization step function) to compare with the scale invariance of the
+soliton candidate.
+
+Investigating Uc = 1.2 line and very long time soliton amplitude for Nc = 20,50, Nb = 250;

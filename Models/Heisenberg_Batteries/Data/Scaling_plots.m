@@ -1,10 +1,10 @@
-clc
-close all
-clear all
+ clc
+% close all
+ clear all
 %%
 J= 1;
-U_b = 0.9;
-U_c = 0.9;
+U_b = 1.2;
+U_c = 0.5;
 
 N = 20:10:50;
 Ncs = N;
@@ -77,17 +77,17 @@ Times{i} = Time;
 end
 
 %% Charge plot
-figure1 = figure('Name',['Battery charges for Ub = ',num2str(U_b),' Uc = ',num2str(U_c)],'Color',[1 1 1]);
-
-for i = 1:length(N)
-    plot(Times{i},Charges{i},'DisplayName',['N = ',num2str(N(i))],'color',col(2*i,:))
-    hold on
-end
-hold off
-
-legend('show')
-xlabel('Jt / Nb');
-ylabel('Charge');
+% figure1 = figure('Name',['Battery charges for Ub = ',num2str(U_b),' Uc = ',num2str(U_c)],'Color',[1 1 1]);
+% 
+% for i = 1:length(N)
+%     plot(Times{i},Charges{i},'DisplayName',['N = ',num2str(N(i))],'color',col(2*i,:))
+%     hold on
+% end
+% hold off
+% 
+% legend('show')
+% xlabel('Jt / Nb');
+% ylabel('Charge');
 
 %% Current plot
 figure2 = figure('Name',['Interface current for Ub = ',num2str(U_b),' Uc = ',num2str(U_c)],'Color',[1 1 1]);
@@ -107,41 +107,45 @@ ylabel('Interface Current');
 
 %% Fidelity plot
 
-figure3 = figure('Name',['Fidelities for Ub = ',num2str(U_b),' Uc = ',num2str(U_c), ' Dmax = ',num2str(D_max)],'Color',[1 1 1]);
+% figure3 = figure('Name',['Fidelities for Ub = ',num2str(U_b),' Uc = ',num2str(U_c), ' Dmax = ',num2str(D_max)],'Color',[1 1 1]);
+% 
+% for i = 1:length(N)
+%     semilogy(Times{i},Fidelities_cell{i},'DisplayName',['N = ',num2str(N(i))],'color',col(2*(i-1) + 1,:))
+%     hold on
+% end
+% hold off
+% 
+% legend('show')
+% xlabel('Jt / Nb');
+% ylabel('Fidelities');
 
-for i = 1:length(N)
-    semilogy(Times{i},Fidelities_cell{i},'DisplayName',['N = ',num2str(N(i))],'color',col(2*(i-1) + 1,:))
-    hold on
-end
-hold off
 
-legend('show')
-xlabel('Jt / Nb');
-ylabel('Fidelities');
-
-
-%% Usual plots
-figure
-imagesc(Currents)
-%%
-figure
-imagesc(Magnetizations)
-%%
-s = size(Magnetizations);
-dM_dT = diff(Magnetizations,1,2);
-dM_dT = [zeros(s(1),1),dM_dT];
-Currents_dM_dT = Currents;
-Currents_dM_dT(1,:) = - dM_dT(1,:);
-for i = 2:s(1)-1
-    Currents_dM_dT(i,:) = -dM_dT(i,:) + Currents_dM_dT(i-1,:);
-end
-Currents_dM_dT = Currents_dM_dT/dt;
-diff = (Currents_dM_dT - Currents);
-diffn = diff;
-diffn(:) = abs(diff(:));
-diffn = diffn(:,50:s(2));
-%%
-figure
-imagesc(diffn)
+% %% Usual plots
+% figure
+% imagesc(Currents)
+% %%
+% figure
+% imagesc(Magnetizations)
+% %%
+% %figure
+% % plot(Magnetizations(30:50,end))
+% % hold on
+% %%
+% s = size(Magnetizations);
+% dM_dT = diff(Magnetizations,1,2);
+% dM_dT = [zeros(s(1),1),dM_dT];
+% Currents_dM_dT = Currents;
+% Currents_dM_dT(1,:) = - dM_dT(1,:);
+% for i = 2:s(1)-1
+%     Currents_dM_dT(i,:) = -dM_dT(i,:) + Currents_dM_dT(i-1,:);
+% end
+% Currents_dM_dT = Currents_dM_dT/dt;
+% diff = (Currents_dM_dT - Currents);
+% diffn = diff;
+% diffn(:) = abs(diff(:));
+% diffn = diffn(:,50:s(2));
+% %%
+% figure
+% imagesc(diffn)
 
 

@@ -1,4 +1,4 @@
-function run_battery(Nc,Nb,U_c,U_b,dt,D_max,freesweeps,tag)
+function run_battery_noSVD(Nc,Nb,U_c,U_b,dt,D_max,freesweeps,tag)
 
 J = 1;
 d = 2;
@@ -81,6 +81,7 @@ Q_mpo{2} = Q_2;
 clear S_Z S_X S_Y S_Z_1 Q_1 Q_2
 
 %%
+State = Inflate_mps(State,D_max);
 State = sweep(State,1);
 canon = 1;
 
@@ -90,17 +91,7 @@ for i = 1:steps
     Magnetizations(:,i) = real(evaluations{1});
     Currents(:,i) = real(evaluations{2});
     
-    %     State = apply(U_odd_half,State);
-    %     State = Iter_comp(State,comp_error,D_max);
-    %     State = apply(U_even_dt,State);
-    %     State = Iter_comp(State,comp_error,D_max);
-    %     State = apply(U_odd_half,State);
-    %     [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max);
-    
-    %     State = apply(U,State);
-    %     [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max,alpha,freesweeps);
-    
-    [State,canon,acc,sw] = cheap_apply_compress(State,U,comp_error,D_max,alpha,freesweeps);
+    [State,canon,acc,sw] = cheap_apply_compress_noSVD(State,U,comp_error,alpha,freesweeps);
     
     Fidelities(i) = acc(end);
     Converging_accuracies{i} = acc;

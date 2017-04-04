@@ -1,0 +1,24 @@
+Nc=20/50   Nb=250  could not finish in 3 days on bellatrix, only went to 1700/2500 steps.
+
+Preliminary results for Uc = 1.2 line do not seem to indicate a sharp transition from exponential size dependence
+to size independence, but rather an increase of the exponential constant. Uc = Ub is it's own thing.
+Eduardo is quite enthusiastic about the switch from steep - step function turning off of the current at Ub = 0 and
+Ub roughly < 1 (as a function of time) to something that looks like power law for Ub > Uc.
+
+Thw two main candidates for the point where this transition occurs are Ub = J and Ub = Uc. To distinguish them,
+Let's perform the Uc = 1.5 line for Ub = [0.8:0.2:1.6].
+
+Another important question is the characterization of low Uc vertical lines, for instance Uc = 0.5 . It seems plausible
+that increasing the bath interaction would lead to a transition from ballistic to insulating, but where exactly? Let's do
+that as well.
+
+Uc = 0.5 transition seems to happen at Ub = 1 from ballistic to insulating, maybe diffusive at the boundary.
+
+
+We need to characterize the boundaries more precisely. As I am getting a good feel for the diagram at this point, I will soon
+need to get a few points in HD : bringing out the big bond dimensions. For this purpose it would be interesting to do some
+real-world case profiling.
+
+I need to do a profiling on the cluster for typical Bond-dimension and chain lengths instead of the N=10 D=50 that I had done.
+It would be interesting to test Giacommo's NO-SVD approach versus the usual SVD in that context.
+

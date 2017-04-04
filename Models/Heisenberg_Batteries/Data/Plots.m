@@ -12,6 +12,7 @@ plot(Charge)
 %% Interface current
 Interface = Currents(Nb,:);
 figure
+hold on 
 plot(Interface);
 %%
 figure

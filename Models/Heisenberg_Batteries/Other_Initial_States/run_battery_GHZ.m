@@ -1,54 +1,75 @@
-function run_battery_Xstate(N,U_c,U_b,dt,D_max,tag)
+function run_battery_GHZ(Nc,Nb,U_c,U_b,dt,D_max,freesweeps,tag)
 
 J = 1;
 d = 2;
 
 D_start = round(D_max/4);
 
-N
+Nc
+Nb
+U_c
+U_b
 D_max
 dt
 alpha = 0.8
-freesweeps = 3
+freesweeps
 
-T = N/(2*J);
+T = Nb/(2*J);
 steps = round(T/dt)
 
+ground_error = 1E-8;
 comp_error = 1E-7;
 
-filename = ['BatteriesXstate','_N',strrep(num2str(N),'.',',') ,'_Ub',strrep(num2str(U_b),'.',',')...
-    ,'_Uc',strrep(num2str(U_c),'.',','),'_','dt',strrep(num2str(dt),'.',','),'_','Dmax',num2str(D_max)...
-    ,'_',tag,'.mat'];
+filename = ['BatteriesGHZ','_Nc',strrep(num2str(Nc),'.',','),'_Nb',strrep(num2str(Nb),'.',',')...
+    ,'_Ub',strrep(num2str(U_b),'.',',')...
+    ,'_Uc',strrep(num2str(U_c),'.',','),'_dt',strrep(num2str(dt),'.',','),'_Dmax',num2str(D_max)...
+    ,'_f',num2str(freesweeps),'_',tag,'.mat'];
 
 %% Initial state preparation
-State = cell(1,3*N);
+State = cell(1,2*Nb + Nc);
 
 Up = zeros(1,1,2);
 Up(1,1,1) = 1;
 Down = zeros(1,1,2);
 Down(1,1,2) = 1;
-Xsite = zeros(1,1,2);
 
-Xsite(1,1,1) = 1;
-Xsite(1,1,2) = 1;
+Left = zeros(1,2,2);
+Left(1,1,1) = 1;
+Left(1,2,2) = 1;
+
+Bulk = zeros(2,2,2);
+Bulk(1,1,1) = 1;
+Bulk(2,2,2) = 1;
+
+Right = zeros(2,1,2);
+Right(1,1,1) = 1;
+Right(2,1,2) = 1;
 
 
-for i=1:N
+for i=1:Nb
     State{i} = Up;
-    State{N+i} = Xsite;
-    State{2*N + i} = Down;
+    State{Nb + Nc + i} = Down;
 end
 
 
+for i=1:Nc
+    State{Nb + i} = Bulk;
+end
+State{Nb+1} = Left;
+State{Nb+Nc} = Right;
+
+clear H_Heis Ground Up Down
 
 %%
-[U_even_dt,U_odd_dt] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt);
-[U_even_half,U_odd_half] = Heisenberg_Batteries_U(N,J,U_b,U_c,dt/2);
+[U_even_dt,U_odd_dt] = Heisenberg_Batteries_U(Nc,Nb,J,U_b,U_c,dt);
+[U_even_half,U_odd_half] = Heisenberg_Batteries_U(Nc,Nb,J,U_b,U_c,dt/2);
 U = compressMPO(U_odd_half,U_even_dt,U_odd_half);
 
+clear U_even_dt U_odd_dt U_even_half U_odd_half
+
 Converging_accuracies = cell(1,steps);
-Magnetizations = zeros(3*N,steps+1);
-Currents = zeros(3*N - 1,steps+1);
+Magnetizations = zeros(Nc + 2*Nb,steps+1);
+Currents = zeros(Nc + 2*Nb - 1,steps+1);
 Fidelities = zeros(1,steps);
 sweeps = zeros(1,steps);
 
@@ -69,6 +90,8 @@ Q_2 = zeros(2,1,d,d);
 Q_2(1,1,:,:) = S_Y*((2*J)^0.5);
 Q_2(2,1,:,:) = - S_X*((2*J)^0.5);
 Q_mpo{2} = Q_2;
+
+clear S_Z S_X S_Y S_Z_1 Q_1 Q_2
 
 %%
 State = sweep(State,1);
@@ -102,6 +125,6 @@ Magnetizations(:,steps+1) = real(evaluations{1});
 Currents(:,steps+1) = real(evaluations{2});
 
 
-save(filename,'Magnetizations','Currents','Fidelities','Converging_accuracies','sweeps')
+save(filename,'Magnetizations','Currents','Fidelities','Converging_accuracies','sweeps','Nc','Nb')
 end
 

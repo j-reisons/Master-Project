@@ -83,6 +83,7 @@ clear S_Z S_X S_Y S_Z_1 Q_1 Q_2
 %%
 State = sweep(State,1);
 canon = 1;
+toggle = 0;
 
 for i = 1:steps
     i
@@ -90,17 +91,16 @@ for i = 1:steps
     Magnetizations(:,i) = real(evaluations{1});
     Currents(:,i) = real(evaluations{2});
     
-    %     State = apply(U_odd_half,State);
-    %     State = Iter_comp(State,comp_error,D_max);
-    %     State = apply(U_even_dt,State);
-    %     State = Iter_comp(State,comp_error,D_max);
-    %     State = apply(U_odd_half,State);
-    %     [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max);
-    
-    %     State = apply(U,State);
-    %     [State,canon,acc,sw] = Iter_comp(State,comp_error,D_max,alpha,freesweeps);
-    
-    [State,canon,acc,sw] = cheap_apply_compress(State,U,comp_error,D_max,alpha,freesweeps);
+    if toggle
+        [State,canon,acc,sw] = cheap_apply_compress_noSVD(State,U,comp_error,alpha,freesweeps);
+    else
+        [State,canon,acc,sw] = cheap_apply_compress(State,U,comp_error,D_max,alpha,freesweeps);
+        if acc > comp_error
+            State = Inflate_mps(State,D_max);
+            State = sweep(State,canon);
+            toggle = 1;
+        end
+    end
     
     Fidelities(i) = acc(end);
     Converging_accuracies{i} = acc;

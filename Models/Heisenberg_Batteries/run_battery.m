@@ -13,6 +13,7 @@ D_max
 dt
 alpha = 0.8
 freesweeps
+saveperiod = 50;
 
 T = Nb/(2*J);
 steps = round(T/dt)
@@ -20,10 +21,7 @@ steps = round(T/dt)
 ground_error = 1E-8;
 comp_error = 1E-7;
 
-filename = ['Batteries','_Nc',strrep(num2str(Nc),'.',','),'_Nb',strrep(num2str(Nb),'.',',')...
-    ,'_Ub',strrep(num2str(U_b),'.',',')...
-    ,'_Uc',strrep(num2str(U_c),'.',','),'_dt',strrep(num2str(dt),'.',','),'_Dmax',num2str(D_max)...
-    ,'_f',num2str(freesweeps),'_',tag,'.mat'];
+
 
 %% Initial state preparation
 State = cell(1,2*Nb + Nc);
@@ -105,13 +103,30 @@ for i = 1:steps
     Fidelities(i) = acc(end);
     Converging_accuracies{i} = acc;
     sweeps(i) = sw;
+    
+    if mod(i,saveperiod) == 0
+        i_save = i+1;
+        save_file = make_filename(Nc,Nb,U_b,U_c,dt,D_max,freesweeps,[tag,'_save']);
+        save(save_file,'Magnetizations','Currents','Fidelities',...
+            'Converging_accuracies','sweeps','Nc','Nb','i_save','State',...
+            'steps','toggle','U','alpha','S_Z_mpo','Q_mpo','canon','comp_error',...
+            'saveperiod');
+    end
+    
 end
 
 evaluations = Canon_evaluator(State,canon,S_Z_mpo,Q_mpo);
 Magnetizations(:,steps+1) = real(evaluations{1});
 Currents(:,steps+1) = real(evaluations{2});
 
-
+filename = make_filename(Nc,Nb,U_b,U_c,dt,D_max,freesweeps,tag);
 save(filename,'Magnetizations','Currents','Fidelities','Converging_accuracies','sweeps','Nc','Nb')
 end
 
+
+function filename = make_filename(Nc,Nb,U_b,U_c,dt,D_max,freesweeps,tag)
+filename = ['Batteries','_Nc',strrep(num2str(Nc),'.',','),'_Nb',strrep(num2str(Nb),'.',',')...
+    ,'_Ub',strrep(num2str(U_b),'.',',')...
+    ,'_Uc',strrep(num2str(U_c),'.',','),'_dt',strrep(num2str(dt),'.',','),'_Dmax',num2str(D_max)...
+    ,'_f',num2str(freesweeps),'_',tag,'.mat'];
+end

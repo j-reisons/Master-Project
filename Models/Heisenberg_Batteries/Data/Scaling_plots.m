@@ -1,9 +1,9 @@
  clc
-% close all
+ %close all
  clear all
 %%
 J= 1;
-U_b = 1.2;
+U_b = 0;
 U_c = 0.5;
 
 N = 20:10:50;

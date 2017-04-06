@@ -2,12 +2,12 @@ clc
 close all
 clear all
 %%
-J= 1;
-U = 1.3;
+J= 1.2;
+U = 1.2;
 
-N = [20,50];
+N = 50;
 Ncs = N;
-Nbs = 1.5*Ncs;
+Nbs = 150%1.5*Ncs;
 
 Cut = 4*Ncs;
 Steps = Nbs*10-Cut;

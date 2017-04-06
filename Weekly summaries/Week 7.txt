@@ -21,5 +21,4 @@ real-world case profiling.
 I need to do a profiling on the cluster for typical Bond-dimension and chain lengths instead of the N=10 D=50 that I had done.
 It would be interesting to test Giacommo's NO-SVD approach versus the usual SVD in that context.
 
-
-
+Long live NO-SVD : almost twice as fast for 2 freesweeps chain length 20/20 bond dimension 100.

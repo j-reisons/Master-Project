@@ -38,4 +38,4 @@ Cheap = MPS + comp;
 fprintf(['This MPS will take ',num2str(MPS/1E9),' GB before evolution, and ',num2str(64*MPS/1E9),...
     ' after evolution. \n']);
 fprintf(['Expensive evolution should take ' , num2str(Total/1E9), ' GB \n']);
-fprintf(['Cheap evolutionshould take ' , num2str(Cheap/1E9), ' GB \n']);
+fprintf(['Cheap evolution should take ' , num2str(Cheap/1E9), ' GB \n']);

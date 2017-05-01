@@ -3,15 +3,20 @@
  clear all
 %%
 J= 1;
-U_b = 0;
+% 1.2879    1.3586    1.4293    1.5000    1.5707    1.6414    1.7121
+% 1.7121    1.6414    1.5707    1.5000    1.4293    1.3586    1.2879
+U_b = 1;
 U_c = 0.5;
+
+% U_c = 0.5;
+% U_b = 1.3;
 
 N = 20:10:50;
 Ncs = N;
 Nbs = 1.5*Ncs;
 dt = 0.05;
 
-D_max = 100;
+D_max = 500;
 freesweeps = 2;
 
 tag = '';
@@ -105,32 +110,49 @@ legend('show')
 xlabel('Jt / Nb');
 ylabel('Interface Current');
 
-%% Fidelity plot
-
-% figure3 = figure('Name',['Fidelities for Ub = ',num2str(U_b),' Uc = ',num2str(U_c), ' Dmax = ',num2str(D_max)],'Color',[1 1 1]);
+%% Current plot
+% figure22 = figure('Name',['Interface current for Ub = ',num2str(U_b),' Uc = ',num2str(U_c)],'Color',[1 1 1]);
 % 
 % for i = 1:length(N)
-%     semilogy(Times{i},Fidelities_cell{i},'DisplayName',['N = ',num2str(N(i))],'color',col(2*(i-1) + 1,:))
+%     plot(Times{i},Interfaces_left{i},'DisplayName',['Left N = ',num2str(N(i))],'color',col(2*(i-1) + 1,:))
 %     hold on
+%     %plot(Times{i},Currents_middle{i},'DisplayName',['Right N = ',num2str(N(i))],'color',col(i,:))
+%     %plot(Times{i},Interfaces_right{i},'DisplayName',['Right N = ',num2str(N(i))],'color',col(i,:))
+%     %plot(Times{i},dC_dts{i},'DisplayName',['dCdT N = ',num2str(N(i))],'color',col(2*i,:))
 % end
 % hold off
 % 
 % legend('show')
 % xlabel('Jt / Nb');
-% ylabel('Fidelities');
+% ylabel('Interface Current');
 
 
-% %% Usual plots
+%% Fidelity plot
+
+figure3 = figure('Name',['Fidelities for Ub = ',num2str(U_b),' Uc = ',num2str(U_c), ' Dmax = ',num2str(D_max)],'Color',[1 1 1]);
+
+for i = 1:length(N)
+    semilogy(Times{i},Fidelities_cell{i},'DisplayName',['N = ',num2str(N(i))],'color',col(2*(i-1) + 1,:))
+    hold on
+end
+hold off
+
+legend('show')
+xlabel('Jt / Nb');
+ylabel('Fidelities');
+
+
+%% Usual plots
 % figure
 % imagesc(Currents)
-% %%
+%%
 % figure
 % imagesc(Magnetizations)
-% %%
-% %figure
-% % plot(Magnetizations(30:50,end))
-% % hold on
-% %%
+%%
+%figure
+% plot(Magnetizations(30:50,end))
+% hold on
+%%
 % s = size(Magnetizations);
 % dM_dT = diff(Magnetizations,1,2);
 % dM_dT = [zeros(s(1),1),dM_dT];

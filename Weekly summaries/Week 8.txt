@@ -1,0 +1,31 @@
+Getting the results from the D=500 calculations started last week.
+
+The question now is how to quantify/illustrate each phase transition from the data.
+
+For the isolating-isolating transition, I need to perform fitting of the current as a function of time.
+The questions are :
+	- where to start and where to end?
+		I was thinking cut from the start of the drop manually until about 0.4 or 0.45 Jt/Nb
+		Perhaps just take bit where clearly power law and say what else is happening before.
+	- what system sizes to investigate?
+		Thinking only 50.
+	- what fit functions to compare? We expect polynomial in the upper left, but what what to fit against the step function
+	  of the upper right?
+
+
+As for the ballistic insulating transitions, I need to perform finite-size scaling.
+Actually I don't have to do finite-size scaling, I can tell another story.
+The questions are:
+ 	- At what time of the evolution to perform the fit?
+		Ideas : Jt/Nc = 0.5 (Jt/Nb = 0.33) as previous paper, or further in time Jt/Nb = 0.4 , 0.45
+	- Do I use Current or dC/dt : which do we trust more?
+		Just keep Current.
+	- For Ub = 0.5 transition, the method will be analogous to the previous results for the Ub = 0 line.
+	  For Uc = 0.5 we however go from ballistic through diffusive to an insulating phase with large oscillations and no clear scaling,
+	  looks close to polynomial. What scaling do we propose to compare to polynomial, exponential again or something else?
+		???
+	- There seems to be a sharp drop at the start of some of the polynomials. Is it due to oscillations ? Do we do anything about it ? 
+
+
+
+FORGET FINITE SIZE SCALING, TELL STORY OF ASYMPTOTIC CURRENTS AND POWER LAW TIME DECAY.

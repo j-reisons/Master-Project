@@ -22,3 +22,13 @@ I need to do a profiling on the cluster for typical Bond-dimension and chain len
 It would be interesting to test Giacommo's NO-SVD approach versus the usual SVD in that context.
 
 Long live NO-SVD : almost twice as fast for 2 freesweeps chain length 20/20 bond dimension 100.
+
+The rough study of the system is basically over. I now need to get results as precise as possible for the various phase transitions
+that I have found in order so as to have a clean, convincing presentation for a paper.
+
+To begin, I should document the following lines :
+	Ballistic to step-function isolating going from  Ub = 0.5 Uc = 0.7:0.1:1.3
+	Ballistic to power-law isolating going from  Uc = 0.5 Ub = 0.7:0.1:1.3
+	Step-function to power-law isolating going along Uc = 3 - Ub , for Ub = 1.5-3*(0.07071):0.07071:1.5+3*(0.07071)
+
+To start out, let's do them all with Ub = 1.5 Uc , D_max = 500 , f = 2 , alpha = 0.8 .	

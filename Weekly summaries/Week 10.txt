@@ -1,0 +1,21 @@
+For the conducting-insulating transitions, I have drawn up the asymptotic currents, as well as standard deviation across
+system sizes to illustrate system size dependence.
+
+For the insulating-insulating transition, I have simply fitted exponentials on the decay of the current and see a 
+change of behavior of the decay rate.
+
+
+Starting the paper.
+
+About making graphs for the paper :
+
+A PRL column is 8 cm in width for text. Figures should be at most that width, most people seem to make them
+7 - 8 cm wide. I should therefore aim to make my plots look good at that size.
+
+For fonts, it seems that text is always a serif font, while most of the graph text is sans-serif.
+
+Inkscape Font size 8 seems legible enough for this size, perhaps a little less is also useable.
+
+Similar options can be specified using Matlab.
+
+I should perhaps try using the subplot command for some of my things.

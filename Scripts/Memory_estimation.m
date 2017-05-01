@@ -2,9 +2,9 @@ clc
 close all
 clear all
 %%
-N = 50;
-N = 3*N;
-D = 600;
+N = 35;
+N = 4*N;
+D = 500;
 d = 2;
 
 U_multiplier = 4*16;

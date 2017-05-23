@@ -5,8 +5,8 @@
 J= 1;
 % 1.2879    1.3586    1.4293    1.5000    1.5707    1.6414    1.7121
 % 1.7121    1.6414    1.5707    1.5000    1.4293    1.3586    1.2879
-U_b = 1;
-U_c = 0.5;
+U_c = 1.5;
+U_b = 1.5;
 
 % U_c = 0.5;
 % U_b = 1.3;
@@ -143,11 +143,11 @@ ylabel('Fidelities');
 
 
 %% Usual plots
-% figure
-% imagesc(Currents)
+figure
+imagesc(Currents)
 %%
-% figure
-% imagesc(Magnetizations)
+figure
+imagesc(Magnetizations)
 %%
 %figure
 % plot(Magnetizations(30:50,end))

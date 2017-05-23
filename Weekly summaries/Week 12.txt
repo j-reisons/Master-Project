@@ -1,0 +1,10 @@
+Fuck writing.
+
+Fullpage plots from matlab fullscreen : scale 0.36
+Fontsize 19
+linewidth 1.5
+
+
+Single column plots from matlab fullscreen : scale 0.17
+Fontsize 40
+linewidth 3

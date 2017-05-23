@@ -1,0 +1,20 @@
+Produced a quick and dirty colormap of asymptotic currents for a small system size as argument for proposed phase diagram.
+
+Specifically, ran the following simulations :
+
+N_S = 20
+N_B = 30
+D = 100
+dt = 0.05
+U_b = 0:0.1:2
+U_s = 0:0.1:2
+
+A feature I just noticed : around U_s = 0.5 , U_b = 1 , a peculiar feature appears on the magnetization profiles : 
+Near the junctions, an area of opposite magnetization to that of the battery appears. Probably interesting to present.
+
+Presenting finite-size scaling : Average currents from time 0.2 to 0.45 and scale that rather than just taking 0.45. Indeed,
+0.45 has accumulated errors during the whole simulation. If we look at U_B = 0.5 U_S = 1, previously observed scaling is intact
+at 0.33 but deteriorates at 0.45. Time-average should allow us to salvage it. This method can probably be used for the other
+ballistic-insulating transition too.
+
+For the Insulating-Insulating transition, I should present two different fits as well.

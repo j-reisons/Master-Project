@@ -2,10 +2,12 @@ clc
 close all
 clear all
 %%
-N = 35;
+N = 20;
 N = 4*N;
-D = 500;
+D = 100;
 d = 2;
+
+%Tits
 
 U_multiplier = 4*16;
 complex_number = 16;
